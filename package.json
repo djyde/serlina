@@ -1,6 +1,7 @@
 {
   "name": "serlina",
   "version": "0.0.1",
+  "description": "Yet another React SSR framework, but server implementation open",
   "main": "index.js",
   "scripts": {
     "test": "node ./test/sample"
