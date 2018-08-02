@@ -22,13 +22,14 @@ class Celina {
     }
   }
 
-  prepare () {
+  prepare() {
     const pagesPath = path.resolve(this.options.baseDir, './page')
     const pageFileNames = fs.readdirSync(pagesPath)
     const pages = {}
+
     pageFileNames.forEach(filename => {
       const pageName = filename.split('.').slice(0, -1).join('.')
-      pages[pageName] = path.resolve(this.options.baseDir, './page', filename)
+      pages[pageName] = [path.resolve(this.options.baseDir, './page', filename)]
     })
 
     const webpackConfig = makeWebpackConfig({
@@ -40,19 +41,25 @@ class Celina {
       webpack(webpackConfig, (err, stats) => {
         if (err || stats.hasErrors()) {
           // Handle errors here
-          rej(err || stats.toString({ colors: true }))
+          rej(err || stats.toString({
+            colors: true
+          }))
         }
-        this.stats = stats.toJson({
-          assets: true
-        })
-        res(stats.toString({ colors: true }))
-      })  
+        this.stats = stats.toJson({})
+        res(stats.toString({
+          colors: true
+        }))
+      })
     })
   }
 
-  render (pageName) {
+  render(pageName) {
     const page = require(path.resolve(this.options.outputPath, pageName + '.js'))
-    const string = '<!DOCTYPE html>' + ReactDOMServer.renderToString(React.createElement(Document, { assets: this.stats.assets }, React.createElement(page.default)))
+
+    const string = '<!DOCTYPE html>' + ReactDOMServer.renderToString(React.createElement(Document, {
+      pageName,
+      publicPath: this.options.publicPath
+    }, React.createElement('div', { id: 'app', 'data-reactroot': '' }, React.createElement(page.default))))
 
     return {
       string

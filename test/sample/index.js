@@ -1,21 +1,28 @@
 const Celina = require('../..')
 const path = require('path')
 
-const http = require('http')
+const Koa = require('koa')
+const serve = require('koa-static')
 
-const app = new Celina({
-  baseDir: path.resolve(__dirname, './')
+const staticPath = path.resolve(__dirname, './public')
+
+const celina = new Celina({
+  baseDir: path.resolve(__dirname, './'),
+  outputPath: staticPath
 })
 
-app.prepare()
-  .then(stats => {
-    const rendered = app.render('page1')
-    console.log(rendered)
-    // const server = http.createServer((req, res) => {
-    //   res.writeHead(200, {'Content-Type': 'text/html'});
-    //   res.write(rendered.string)
-    //   res.end()
-    // })
-    // server.listen(8080)
+celina.prepare()
+  .then(() => {
+    const rendered = celina.render('page1')
+
+    const app = new Koa()
+
+    app.use(serve(staticPath))
+
+    app.use(async ctx => {
+      ctx.body = rendered.string
+    })
+
+    app.listen(8080)
   })
   .catch(console.error)

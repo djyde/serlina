@@ -7,18 +7,7 @@ module.exports = ({
   dev,
   pages = {}
 } = {}) => {
-  return {
-    entry: pages,
-    output: {
-      filename: '[name].js',
-      path: outputPath,
-      publicPath,
-      library: {
-        commonjs: '__celina'
-      },
-      globalObject: 'this',
-      libraryTarget: 'umd'
-    },
+  const common = {
     resolve: {
       // Add `.ts` and `.tsx` as a resolvable extension.
       extensions: [".ts", ".tsx", ".js"]
@@ -32,4 +21,29 @@ module.exports = ({
       ]
     }
   }
+  return [
+    {
+      entry: pages,
+      output: {
+        filename: '[name].js',
+        path: outputPath,
+        publicPath,
+        library: '__celina',
+        globalObject: 'this',
+        libraryTarget: 'umd'
+      },
+      ...common
+    },
+    {
+      entry: {
+        main: path.resolve(__dirname, '../client/render')
+      },
+      output: {
+        filename: '[name].js',
+        path: outputPath,
+        publicPath,
+      },
+      ...common
+    }
+  ]
 }

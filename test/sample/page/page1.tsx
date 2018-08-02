@@ -1,5 +1,6 @@
 import * as React from 'react'
 
 export default () => {
-  return <div>Hello from page1</div>
+  const o = () => { alert('works') }
+  return <div onClick={o}>Hello from page1</div>
 }

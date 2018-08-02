@@ -1,5 +1,5 @@
 import { hydrate } from 'react-dom'
 
-declare var __celina: any
+declare var window: any
 
-hydrate(__celina, document.querySelector('#app'))
+hydrate(window.__celina.default(), document.querySelector('#app'))
