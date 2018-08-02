@@ -2,13 +2,17 @@ const path = require('path')
 
 module.exports = ({
   baseDir,
+  outputPath,
+  publicPath,
+  dev,
   pages = {}
 } = {}) => {
   return {
     entry: pages,
     output: {
       filename: '[name].js',
-      path: path.resolve(baseDir, '.celina'),
+      path: outputPath,
+      publicPath,
       library: {
         commonjs: '__celina'
       },

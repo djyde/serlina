@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test"
+    "test": "node ./test/sample"
   },
   "dependencies": {
     "ts-loader": "^4.4.2",

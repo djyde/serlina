@@ -4,14 +4,21 @@ const fs = require('fs')
 const ReactDOMServer = require('react-dom/server')
 const path = require('path')
 const React = require('react')
+
+const Document = require('./components/Document')
 class Celina {
 
   constructor({
-    baseDir = ''
+    baseDir = '',
+    outputPath = path.resolve(baseDir, '.celina'),
+    publicPath = '/',
+    dev = true
   } = {}) {
     this.options = {
       baseDir,
-      builtDir: path.resolve(baseDir, '.celina')
+      dev,
+      outputPath,
+      publicPath
     }
   }
 
@@ -25,8 +32,8 @@ class Celina {
     })
 
     const webpackConfig = makeWebpackConfig({
-      baseDir: this.options.baseDir,
-      pages
+      ...this.options,
+      pages,
     })
 
     return new Promise((res, rej) => {
@@ -35,15 +42,18 @@ class Celina {
           // Handle errors here
           rej(err || stats.toString({ colors: true }))
         }
+        this.stats = stats.toJson({
+          assets: true
+        })
         res(stats.toString({ colors: true }))
       })  
     })
   }
 
   render (pageName) {
-    const page = require(path.resolve(this.options.builtDir, pageName + '.js'))
-    const string = ReactDOMServer.renderToString(React.createElement(page.default))
-    
+    const page = require(path.resolve(this.options.outputPath, pageName + '.js'))
+    const string = '<!DOCTYPE html>' + ReactDOMServer.renderToString(React.createElement(Document, { assets: this.stats.assets }, React.createElement(page.default)))
+
     return {
       string
     }
