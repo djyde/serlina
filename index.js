@@ -45,7 +45,7 @@ class Celina {
             colors: true
           }))
         }
-        this.stats = stats.toJson({})
+        this.stats = stats.toJson()
         res(stats.toString({
           colors: true
         }))
