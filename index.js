@@ -1,3 +1,4 @@
+require('babel-polyfill')
 const webpack = require('webpack')
 const makeWebpackConfig = require('./config/webpack.config')
 const fs = require('fs')

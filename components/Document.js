@@ -10,7 +10,7 @@ module.exports = ({
 }) => {
   console.log(pageScripts)
   const scripts = pageScripts.map(script => publicPath + script.name).concat([
-    publicPath + 'main.js'
+    publicPath + 'main.js',
   ])
 
   const styles = pageStyles.map(style => publicPath + style.name).concat([
@@ -32,7 +32,9 @@ module.exports = ({
     })
   })
 
-  const Head = React.createElement('head', {}, Styles)
+  const Head = React.createElement('head', {}, Styles, React.createElement('script', {
+    src: publicPath + 'vendors.js'
+  }))
 
   const Body = React.createElement('body', {}, React.createElement('script', {
     dangerouslySetInnerHTML: {

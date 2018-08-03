@@ -43,7 +43,8 @@ module.exports = ({
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['env', 'react']
+              presets: ['env', 'react'],
+              plugins: ['transform-regenerator']
             }
           }
         },
@@ -82,7 +83,7 @@ module.exports = ({
     {
       entry: {
         main: [path.resolve(__dirname, '../client/render')],
-        vendors: ['babel-polyfill', 'react', 'react-dom']
+        vendors: ['babel-polyfill']
       },
       output: {
         filename: '[name].js',
