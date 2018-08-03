@@ -5,7 +5,7 @@ const ReactDOMServer = require('react-dom/server')
 const path = require('path')
 const React = require('react')
 const serve = require('webpack-serve')
-
+const WDS = require('webpack-dev-server')
 const Document = require('./components/Document')
 
 const DEV_SERVER_HOST = '127.0.0.1'
@@ -54,30 +54,46 @@ class Serlina {
         this.stats = stats.toJson({})
 
         if (this.options.dev === true) {
-          return serve({}, {
+
+          const devServerOptions = {
             host: DEV_SERVER_HOST,
             port: DEV_SERVER_PORT,
-            config: webpackConfig,
-            devMiddleware: {
-              headers: {
-                "Access-Control-Allow-Origin": "*",
-              }
+            headers: {
+              "Access-Control-Allow-Origin": "*"
             }
-          }).then((result) => {
-            result.on('build-started', compiler => {
-              console.log('Building...')
-            })
+          }
 
-            result.on('compiler-error', stats => {
-              console.log(stats.error)
-              return rej(stats.error)
-            })
+          const compiler = webpack(webpackConfig)
+          const devServer = new WDS(compiler, devServerOptions)
 
-            result.on('build-finished', stats => {
-              console.log('Building finished')
-              return res(stats)
-            })
+          devServer.listen(DEV_SERVER_PORT, DEV_SERVER_HOST, () => {
+            res()
           })
+
+          // return serve({}, {
+          //   host: DEV_SERVER_HOST,
+          //   port: DEV_SERVER_PORT,
+          //   config: webpackConfig,
+          //   devMiddleware: {
+          //     headers: {
+          //       "Access-Control-Allow-Origin": "*",
+          //     }
+          //   }
+          // }).then((result) => {
+          //   result.on('build-started', compiler => {
+          //     console.log('Building...')
+          //   })
+
+          //   result.on('compiler-error', stats => {
+          //     console.log(stats.error)
+          //     return rej(stats.error)
+          //   })
+
+          //   result.on('build-finished', stats => {
+          //     console.log('Building finished')
+          //     return res(stats)
+          //   })
+          // })
         } else {
           return res()
         }
@@ -86,6 +102,7 @@ class Serlina {
   }
 
   render(pageName) {
+    delete require.cache[path.resolve(this.options.outputPath, pageName + '.js')]
     const page = require(path.resolve(this.options.outputPath, pageName + '.js'))
 
     const string = '<!DOCTYPE html>' + ReactDOMServer.renderToString(React.createElement(Document, {

@@ -12,9 +12,8 @@ const serlina = new Serlina({
 
 serlina.prepare()
   .then(() => {
-    const rendered = serlina.render('page2')
-
     http.createServer((req, res) => {
+      const rendered = serlina.render('page2')
       res.writeHead(200, {'Content-Type': 'text/html'})
       res.write(rendered.string)
       res.end()

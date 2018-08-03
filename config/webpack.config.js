@@ -1,4 +1,6 @@
 const path = require('path')
+const webpack = require('webpack')
+const WFP = require('write-file-webpack-plugin')
 
 module.exports = ({
   baseDir,
@@ -40,7 +42,12 @@ module.exports = ({
           }
         }
       ]
-    }
+    },
+    plugins: [
+      new WFP({
+        test: /(\.js$)|!(\.hot-update.js)/
+      })
+    ]
   })
   return [{
       entry: pages,
