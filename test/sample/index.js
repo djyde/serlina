@@ -12,11 +12,26 @@ const serlina = new Serlina({
 
 serlina.prepare()
   .then(() => {
-    http.createServer((req, res) => {
-      const rendered = serlina.render('page2')
-      res.writeHead(200, {'Content-Type': 'text/html'})
-      res.write(rendered.string)
-      res.end()
+    http.createServer(async (req, res) => {
+      serlina.inject({ req })
+
+      try {
+        const rendered = await serlina.render('page2')
+
+        res.writeHead(200, {
+          'Content-Type': 'text/html'
+        })
+        res.write(rendered.string)
+        res.end()
+      } catch (e) {
+        res.writeHead(200, {
+          'Content-Type': 'text/html'
+        })
+        console.log(e)
+        res.write(JSON.stringify(e))
+        res.end()
+      }
+
     }).listen(8090)
 
 

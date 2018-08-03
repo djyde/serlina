@@ -37,7 +37,9 @@ module.exports = ({
             loader: 'babel-loader',
             options: {
               presets: ['env', 'react'],
-              plugins: [].concat(hotReload ? 'react-hot-loader/babel' : [])
+              plugins: [
+                'transform-regenerator'
+              ].concat(hotReload ? 'react-hot-loader/babel' : [])
             }
           }
         }
@@ -63,7 +65,8 @@ module.exports = ({
     },
     {
       entry: {
-        main: path.resolve(__dirname, '../client/render')
+        main: [path.resolve(__dirname, '../client/render')],
+        vendors: ['babel-polyfill', 'react', 'react-dom']
       },
       output: {
         filename: '[name].js',

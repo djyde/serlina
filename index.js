@@ -70,30 +70,6 @@ class Serlina {
             res()
           })
 
-          // return serve({}, {
-          //   host: DEV_SERVER_HOST,
-          //   port: DEV_SERVER_PORT,
-          //   config: webpackConfig,
-          //   devMiddleware: {
-          //     headers: {
-          //       "Access-Control-Allow-Origin": "*",
-          //     }
-          //   }
-          // }).then((result) => {
-          //   result.on('build-started', compiler => {
-          //     console.log('Building...')
-          //   })
-
-          //   result.on('compiler-error', stats => {
-          //     console.log(stats.error)
-          //     return rej(stats.error)
-          //   })
-
-          //   result.on('build-finished', stats => {
-          //     console.log('Building finished')
-          //     return res(stats)
-          //   })
-          // })
         } else {
           return res()
         }
@@ -101,17 +77,24 @@ class Serlina {
     })
   }
 
-  render(pageName) {
+  inject (payload) {
+    this.injectedPayload = payload
+  }
+
+  async render(pageName) {
     delete require.cache[path.resolve(this.options.outputPath, pageName + '.js')]
     const page = require(path.resolve(this.options.outputPath, pageName + '.js'))
 
+    const initialProps = page.default.getInitialProps ? await page.default.getInitialProps(this.injectedPayload) : {}
+
     const string = '<!DOCTYPE html>' + ReactDOMServer.renderToString(React.createElement(Document, {
       pageName,
-      publicPath: this.options.publicPath
+      publicPath: this.options.publicPath,
+      initialProps
     }, React.createElement('div', {
       id: 'app',
       'data-reactroot': ''
-    }, React.createElement(page.default))))
+    }, React.createElement(page.default, initialProps))))
 
     return {
       string
