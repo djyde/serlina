@@ -1,6 +1,6 @@
 .DS_Store
 node_modules
-.celina
 yarn.lock
 test/sample/public
 package-lock.json
+.serlina

@@ -3,10 +3,12 @@
     "test": "node index"
   },
   "dependencies": {
+    "antd": "^3.7.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2"
   },
   "devDependencies": {
+    "babel-plugin-import": "^1.8.0",
     "less": "^3.8.0",
     "less-loader": "^4.1.0"
   }

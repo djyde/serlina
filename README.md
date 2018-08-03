@@ -180,6 +180,10 @@ module.exports = {
 
 You need to return a webpack config object. Which will be merge into default config using [`webpack-merge`](https://github.com/survivejs/webpack-merge)
 
+### Custom Babel config
+
+All you need to do is adding a `.babelrc` in `baseDir`.
+
 ### TypeScript support
 
 TypeScript is support out of the box. Just add a `tsconfig.json` in your `baseDir`, and name the page with `.tsx`. That is!

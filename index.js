@@ -15,7 +15,7 @@ class Serlina {
 
   constructor({
     baseDir = '',
-    outputPath = path.resolve(baseDir, '.celina'),
+    outputPath = path.resolve(baseDir, '.serlina'),
     publicPath = 'http://' + DEV_SERVER_HOST + ':' + DEV_SERVER_PORT + '/',
     serlinaConfig = fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {},
     dev = true

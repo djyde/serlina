@@ -12,14 +12,18 @@ module.exports = ({
   dev,
   pages = {}
 } = {}) => {
+  
   const common = merge({
-    mode: 'development',
+    context: baseDir,
+    mode: dev ? 'development' : 'production',
     resolve: {
       // Add `.ts` and `.tsx` as a resolvable extension.
-      extensions: [".ts", ".tsx", ".js"],
+      extensions: [".ts", ".tsx", ".js"]
+    },
+    resolveLoader: {
       modules: [
         path.resolve(__dirname, '../node_modules'),
-        'node_modules'
+        'node_modules',
       ]
     },
     module: {
