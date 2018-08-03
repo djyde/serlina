@@ -4,9 +4,9 @@ const fs = require('fs')
 const ReactDOMServer = require('react-dom/server')
 const path = require('path')
 const React = require('react')
-const serve = require('webpack-serve')
 const WDS = require('webpack-dev-server')
 const Document = require('./components/Document')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const DEV_SERVER_HOST = '127.0.0.1'
 const DEV_SERVER_PORT = 3000
@@ -17,11 +17,13 @@ class Serlina {
     baseDir = '',
     outputPath = path.resolve(baseDir, '.celina'),
     publicPath = 'http://' + DEV_SERVER_HOST + ':' + DEV_SERVER_PORT + '/',
+    serlinaConfig = fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {},
     dev = true
   } = {}) {
     this.options = {
       baseDir,
       dev,
+      serlinaConfig,
       outputPath,
       publicPath
     }
@@ -41,6 +43,9 @@ class Serlina {
     const webpackConfig = makeWebpackConfig({
       ...this.options,
       pages,
+      customConfig: this.options.serlinaConfig.webpack ? this.options.serlinaConfig.webpack(webpack, {
+        miniCSSLoader: MiniCssExtractPlugin.loader
+      }) : {}
     })
 
     return new Promise((res, rej) => {

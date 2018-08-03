@@ -1,6 +1,6 @@
 {
   "name": "serlina",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Yet another React SSR framework, but server implementation open",
   "main": "index.js",
   "scripts": {
@@ -9,25 +9,20 @@
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
-    "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^1.0.0",
     "mini-css-extract-plugin": "^0.4.1",
-    "postcss-loader": "^2.1.6",
-    "react-hot-loader": "^4.3.4",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.4.2",
     "typescript": "^3.0.1",
     "webpack": "^4.16.3",
     "webpack-dev-server": "^3.1.5",
-    "webpack-serve": "^2.0.2",
+    "webpack-merge": "^4.1.4",
     "write-file-webpack-plugin": "^4.3.2"
   },
   "devDependencies": {
-    "koa": "^2.5.2",
-    "koa-static": "^5.0.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2"
   }
