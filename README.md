@@ -102,7 +102,7 @@ import * as React from 'react'
 
 export default class Page1 extends React.Component {
 
-  static getInitialProps ({ req }) {
+  static async getInitialProps ({ req }) {
     return {
       url: req.url
     }
