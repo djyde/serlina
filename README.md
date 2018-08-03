@@ -113,6 +113,21 @@ export default class Page1 extends React.Component {
 
 ```
 
+### Styles
+
+#### plain css
+
+Serlina support plain css, just import it:
+
+```js
+// page/page1.js
+import './style/foo.css'
+
+export default () => {
+  return <div>Hello Serlina!</div>
+}
+```
+
 ### TypeScript support
 
 TypeScript is support out of the box. Just add a `tsconfig.json` in your `baseDir`, and name the page with `.tsx`. That is!

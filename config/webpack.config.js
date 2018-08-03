@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const WFP = require('write-file-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = ({
   baseDir,
@@ -9,7 +10,7 @@ module.exports = ({
   dev,
   pages = {}
 } = {}) => {
-  const common = (hotReload) => ({
+  const common = {
     mode: 'development',
     resolve: {
       // Add `.ts` and `.tsx` as a resolvable extension.
@@ -36,21 +37,30 @@ module.exports = ({
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['env', 'react'],
-              plugins: [
-                'transform-regenerator'
-              ].concat(hotReload ? 'react-hot-loader/babel' : [])
+              presets: ['env', 'react']
             }
           }
+        },
+        {
+          test: /\.css$/,
+          exclude: /(node_modules)/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            {loader: 'css-loader', options: { importLoaders: 1 }}
+          ]
         }
       ]
     },
     plugins: [
       new WFP({
-        test: /(\.js$)|!(\.hot-update.js)/
+        test: /(\.js$)/
+      }),
+      new MiniCssExtractPlugin({
+        filename: '[name].css'
       })
     ]
-  })
+  }
+
   return [{
       entry: pages,
       output: {
@@ -61,7 +71,7 @@ module.exports = ({
         globalObject: 'this',
         libraryTarget: 'umd'
       },
-      ...common()
+      ...common
     },
     {
       entry: {
@@ -73,7 +83,7 @@ module.exports = ({
         path: outputPath,
         publicPath,
       },
-      ...common(false)
+      ...common
     }
   ]
 }
