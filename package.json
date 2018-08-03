@@ -1,6 +1,6 @@
 {
   "name": "serlina",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Yet another React SSR framework, but server implementation open",
   "main": "index.js",
   "scripts": {
