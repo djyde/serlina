@@ -1,6 +1,6 @@
 {
   "name": "serlina",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Yet another React SSR framework, but server implementation open",
   "main": "dist/index.js",
   "files": [
@@ -9,7 +9,9 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
-    "test": "node ./test/sample"
+    "clean": "rimraf dist",
+    "test": "node ./test/sample",
+    "prepublish": "npm run clean && npm run build"
   },
   "dependencies": {
     "babel-core": "^6.26.3",
@@ -34,6 +36,7 @@
     "@types/react": "^16.4.7",
     "@types/react-dom": "^16.0.6",
     "react": "^16.4.2",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "rimraf": "^2.6.2"
   }
 }
