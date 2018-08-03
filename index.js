@@ -6,7 +6,7 @@ const path = require('path')
 const React = require('react')
 
 const Document = require('./components/Document')
-class Celina {
+class Serlina {
 
   constructor({
     baseDir = '',
@@ -67,4 +67,4 @@ class Celina {
   }
 }
 
-module.exports = Celina
+module.exports = Serlina

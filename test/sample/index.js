@@ -1,4 +1,4 @@
-const Celina = require('../..')
+const Serlina = require('../..')
 const path = require('path')
 
 const Koa = require('koa')
@@ -6,14 +6,14 @@ const serve = require('koa-static')
 
 const staticPath = path.resolve(__dirname, './public')
 
-const celina = new Celina({
+const serlina = new Serlina({
   baseDir: path.resolve(__dirname, './'),
   outputPath: staticPath
 })
 
-celina.prepare()
+serlina.prepare()
   .then(() => {
-    const rendered = celina.render('page1')
+    const rendered = serlina.render('page1')
 
     const app = new Koa()
 
