@@ -1,6 +1,8 @@
 # Serlina
 
-Yet another React SSR framework, but open for server implementation.
+Yet another React SSR framework (core), but open for server implementation.
+
+[![npm](https://img.shields.io/npm/v/serlina.svg)](https://github.com/djyde/serlina)
 
 ## Motivation
 
