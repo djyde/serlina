@@ -66,6 +66,7 @@ class Serlina {
           const devServerOptions = {
             host: DEV_SERVER_HOST,
             port: DEV_SERVER_PORT,
+            quiet: true,
             headers: {
               "Access-Control-Allow-Origin": "*"
             }

@@ -1,5 +1,5 @@
 const path = require('path')
-const webpack = require('webpack')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const WFP = require('write-file-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const merge = require('webpack-merge')
@@ -64,7 +64,8 @@ module.exports = ({
       }),
       new MiniCssExtractPlugin({
         filename: '[name].css'
-      })
+      }),
+      new FriendlyErrorsWebpackPlugin()
     ]
   }, customConfig)
 
