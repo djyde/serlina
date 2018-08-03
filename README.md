@@ -156,7 +156,7 @@ module.exports = {
 }
 ```
 
-⚠️ **Notice that you should use `miniCSSLoader` instead of `style-loader` **.
+⚠️ **Notice that you should use `miniCSSLoader` instead of `style-loader`**.
 
 ### Custom Webpack config
 
