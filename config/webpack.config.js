@@ -2,15 +2,17 @@ const path = require('path')
 const webpack = require('webpack')
 const WFP = require('write-file-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const merge = require('webpack-merge')
 
 module.exports = ({
+  customConfig = {},
   baseDir,
   outputPath,
   publicPath,
   dev,
   pages = {}
 } = {}) => {
-  const common = {
+  const common = merge({
     mode: 'development',
     resolve: {
       // Add `.ts` and `.tsx` as a resolvable extension.
@@ -59,7 +61,7 @@ module.exports = ({
         filename: '[name].css'
       })
     ]
-  }
+  }, customConfig)
 
   return [{
       entry: pages,

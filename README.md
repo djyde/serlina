@@ -130,6 +130,56 @@ export default () => {
 }
 ```
 
+#### custom css processer
+
+While you are able to [Customize Webpack config](#custom-webpack-config), you can add whatever css processer loader you want. For example, when we need `less-loader`:
+
+```
+npm i less less-loader --save-dev
+```
+
+In `serlina.config.js`:
+
+```js
+// serlina.config.js
+module.exports = {
+  webpack(webpack, { miniCSSLoader }) {
+    return {
+      module: {
+        rules: [{
+          test: /\.less$/,
+          use: [ miniCSSLoader, 'css-loader', 'less-loader']
+        }]
+      }
+    }
+  }
+}
+```
+
+⚠️ **Notice that you should use `miniCSSLoader` instead of `style-loader` **.
+
+### Custom Webpack config
+
+It's easy to customize Webpack plugin. Create a `serlina.config.js`:
+
+```js
+// serlina.config.js
+
+module.exports = {
+  webpack(webpack, options) {
+    return {
+      module: {
+        rules: [{
+         // ...
+        }]
+      }
+    }
+  }
+}
+```
+
+You need to return a webpack config object. Which will be merge into default config using [`webpack-merge`](https://github.com/survivejs/webpack-merge)
+
 ### TypeScript support
 
 TypeScript is support out of the box. Just add a `tsconfig.json` in your `baseDir`, and name the page with `.tsx`. That is!

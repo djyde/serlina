@@ -6,6 +6,7 @@ const path = require('path')
 const React = require('react')
 const WDS = require('webpack-dev-server')
 const Document = require('./components/Document')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const DEV_SERVER_HOST = '127.0.0.1'
 const DEV_SERVER_PORT = 3000
@@ -42,6 +43,9 @@ class Serlina {
     const webpackConfig = makeWebpackConfig({
       ...this.options,
       pages,
+      customConfig: this.options.serlinaConfig.webpack ? this.options.serlinaConfig.webpack(webpack, {
+        miniCSSLoader: MiniCssExtractPlugin.loader
+      }) : {}
     })
 
     return new Promise((res, rej) => {
