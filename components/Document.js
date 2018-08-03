@@ -8,7 +8,6 @@ module.exports = ({
   initialProps = {},
   publicPath = '/'
 }) => {
-  console.log(pageScripts)
   const scripts = pageScripts.map(script => publicPath + script.name).concat([
     publicPath + 'main.js',
   ])

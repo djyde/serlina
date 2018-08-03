@@ -184,6 +184,18 @@ You need to return a webpack config object. Which will be merge into default con
 
 All you need to do is adding a `.babelrc` in `baseDir`.
 
+### Custom 404 page
+
+If the page that render by `serlina.render()` is not exist, Serlina will render a default 404 page. You can use wirte own 404 page by creating a `_404` file in `page` folder:
+
+```js
+// page/_404.js
+
+export default () => {
+  return <div>Page not found</div>
+}
+```
+
 ### TypeScript support
 
 TypeScript is support out of the box. Just add a `tsconfig.json` in your `baseDir`, and name the page with `.tsx`. That is!

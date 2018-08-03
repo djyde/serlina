@@ -12,6 +12,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const DEV_SERVER_HOST = '127.0.0.1'
 const DEV_SERVER_PORT = 3000
 
+const noCacheRequire = (pkg) => {
+  delete require.cache[pkg]
+  return require(pkg)
+}
+
 class Serlina {
 
   constructor({
@@ -21,6 +26,10 @@ class Serlina {
     serlinaConfig = fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {},
     dev = true
   } = {}) {
+
+    this.resolveApp = p => path.resolve(baseDir, p)
+    this.resolveOutput = p => path.resolve(outputPath, p)
+
     this.options = {
       baseDir,
       dev,
@@ -92,8 +101,20 @@ class Serlina {
 
   async render(pageName) {
     if (pageName.startsWith('/')) pageName = pageName.replace('/', '')
-    delete require.cache[path.resolve(this.options.outputPath, pageName + '.js')]
-    const page = require(path.resolve(this.options.outputPath, pageName + '.js'))
+    let page;
+
+    try {
+      page = noCacheRequire(this.resolveOutput(pageName + '.js'))
+    } catch (e) {
+      pageName = '_404'
+      if (fs.existsSync(this.resolveOutput('./_404.js'))) {
+        page = noCacheRequire(this.resolveOutput('./_404.js'))
+      } else {
+        page = {
+          default: noCacheRequire('./components/_404')
+        }
+      }
+    }
 
     const initialProps = page.default.getInitialProps ? await page.default.getInitialProps(this.injectedPayload) : {}
 
