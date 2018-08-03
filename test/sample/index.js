@@ -13,7 +13,7 @@ serlina.prepare()
       serlina.inject({ req })
 
       try {
-        const rendered = await serlina.render('page2')
+        const rendered = await serlina.render(req.url)
 
         res.writeHead(200, {
           'Content-Type': 'text/html'

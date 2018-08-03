@@ -51,7 +51,9 @@ class Serlina {
             colors: true
           }))
         }
-        this.stats = stats.toJson({})
+        this.stats = stats.toJson({
+          assets: true
+        })
 
         if (this.options.dev === true) {
 
@@ -82,12 +84,22 @@ class Serlina {
   }
 
   async render(pageName) {
+    if (pageName.startsWith('/')) pageName = pageName.replace('/', '')
     delete require.cache[path.resolve(this.options.outputPath, pageName + '.js')]
     const page = require(path.resolve(this.options.outputPath, pageName + '.js'))
 
     const initialProps = page.default.getInitialProps ? await page.default.getInitialProps(this.injectedPayload) : {}
 
+    const pageAssets = this.stats.children[0].assets
+
+    const chunks = pageAssets.filter(asset => asset.chunkNames.indexOf(pageName) !== -1)
+
+    const pageScripts = chunks.filter(asset => asset.name.split('.').pop() === 'js')
+    const pageStyles = chunks.filter(asset => asset.name.split('.').pop() === 'css')
+
     const string = '<!DOCTYPE html>' + ReactDOMServer.renderToString(React.createElement(Document, {
+      pageScripts,
+      pageStyles,
       pageName,
       publicPath: this.options.publicPath,
       initialProps

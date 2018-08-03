@@ -4,7 +4,7 @@ Yet another React SSR framework, but open for server implementation.
 
 ## Motivation
 
-I love using [Next.js](https://github.com/zeit/next.js/), but most of my projects need to use our own web server framework while Next.js run it own server. So I begin making a SSR framework that like Next.js but open for server implementation. It does all the building, compiling, rendering-to-string things and give the rest render-to-html things to server implementation.
+I love using [Next.js](https://github.com/zeit/next.js/), but most of my projects need to use our own web server framework while Next.js run it own server. So I begin making a SSR framework (core) that like Next.js but open for server implementation. It does all the building, compiling, rendering-to-string things and give the rest render-to-html things to server implementation.
 
 > Of course I know Next.js can [custom server and routing](https://github.com/zeit/next.js#custom-server-and-routing), but while Next.js handle the whole http `context`, [I cannot use it in a high layer web framework](https://github.com/eggjs/egg/issues/328).
 
@@ -111,6 +111,21 @@ export default class Page1 extends React.Component {
   }
 }
 
+```
+
+### Styles
+
+#### plain css
+
+Serlina support plain css, just import it:
+
+```js
+// page/page1.js
+import './style/foo.css'
+
+export default () => {
+  return <div>Hello Serlina!</div>
+}
 ```
 
 ### TypeScript support
