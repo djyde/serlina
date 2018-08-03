@@ -1,8 +1,7 @@
 const Serlina = require('../..')
 const path = require('path')
 
-const Koa = require('koa')
-const serve = require('koa-static')
+const http = require('http')
 
 const staticPath = path.resolve(__dirname, './public')
 
@@ -13,16 +12,13 @@ const serlina = new Serlina({
 
 serlina.prepare()
   .then(() => {
-    const rendered = serlina.render('page1')
+    http.createServer((req, res) => {
+      const rendered = serlina.render('page2')
+      res.writeHead(200, {'Content-Type': 'text/html'})
+      res.write(rendered.string)
+      res.end()
+    }).listen(8090)
 
-    const app = new Koa()
 
-    app.use(serve(staticPath))
-
-    app.use(async ctx => {
-      ctx.body = rendered.string
-    })
-
-    app.listen(8080)
   })
   .catch(console.error)
