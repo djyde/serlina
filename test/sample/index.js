@@ -3,11 +3,8 @@ const path = require('path')
 
 const http = require('http')
 
-const staticPath = path.resolve(__dirname, './public')
-
 const serlina = new Serlina({
-  baseDir: path.resolve(__dirname, './'),
-  outputPath: staticPath
+  baseDir: path.resolve(__dirname, './')
 })
 
 serlina.prepare()

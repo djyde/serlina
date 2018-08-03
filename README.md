@@ -45,8 +45,7 @@ const path = require('path')
 const http = require('http')
 
 const serlina = new Serlina({
-  baseDir: path.resolve(__dirname, './'),
-  outputPath: path.resolve(__dirname, './public')
+  baseDir: path.resolve(__dirname, './')
 })
 
 serlina.prepare()
