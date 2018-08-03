@@ -23,7 +23,7 @@ Create a folder structure like:
 And install serlina:
 
 ```
-npm i serlina --save
+npm i serlina react react-dom --save
 ```
 
 Firstly write your first page:

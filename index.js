@@ -4,7 +4,6 @@ const fs = require('fs')
 const ReactDOMServer = require('react-dom/server')
 const path = require('path')
 const React = require('react')
-const serve = require('webpack-serve')
 const WDS = require('webpack-dev-server')
 const Document = require('./components/Document')
 
@@ -17,11 +16,13 @@ class Serlina {
     baseDir = '',
     outputPath = path.resolve(baseDir, '.celina'),
     publicPath = 'http://' + DEV_SERVER_HOST + ':' + DEV_SERVER_PORT + '/',
+    serlinaConfig = fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {},
     dev = true
   } = {}) {
     this.options = {
       baseDir,
       dev,
+      serlinaConfig,
       outputPath,
       publicPath
     }
