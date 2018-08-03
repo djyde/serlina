@@ -3,3 +3,4 @@ node_modules
 .celina
 yarn.lock
 test/sample/public
+package-lock.json

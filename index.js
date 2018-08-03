@@ -43,35 +43,46 @@ class Serlina {
       pages,
     })
 
-    if (this.options.dev === true) {
-      return serve({}, {
-        host: DEV_SERVER_HOST,
-        port: DEV_SERVER_PORT,
-        config: webpackConfig,
-        content: this.options.outputPath,
-        devMiddleware: {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          }
+    return new Promise((res, rej) => {
+      webpack(webpackConfig, (err, stats) => {
+        if (err || stats.hasErrors()) {
+          // Handle errors here
+          rej(err || stats.toString({
+            colors: true
+          }))
         }
-      }).then((result) => {
-        result.on('build-started', compiler => {
-          console.log('Building...')
-        })
+        this.stats = stats.toJson({})
 
-        result.on('compiler-error', stats => {
-          console.log(stats.error)
-          return Promise.reject(stats.error)
-        })
+        if (this.options.dev === true) {
+          return serve({}, {
+            host: DEV_SERVER_HOST,
+            port: DEV_SERVER_PORT,
+            config: webpackConfig,
+            devMiddleware: {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+              }
+            }
+          }).then((result) => {
+            result.on('build-started', compiler => {
+              console.log('Building...')
+            })
 
-        result.on('build-finished', stats => {
-          console.log('Building finished')
-          return Promise.resolve(stats)
-        })
+            result.on('compiler-error', stats => {
+              console.log(stats.error)
+              return rej(stats.error)
+            })
+
+            result.on('build-finished', stats => {
+              console.log('Building finished')
+              return res(stats)
+            })
+          })
+        } else {
+          return res()
+        }
       })
-    } else {
-      return Promise.resolve()
-    }
+    })
   }
 
   render(pageName) {

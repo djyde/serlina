@@ -12,7 +12,7 @@ const serlina = new Serlina({
 
 serlina.prepare()
   .then(() => {
-    const rendered = serlina.render('page1')
+    const rendered = serlina.render('page2')
 
     http.createServer((req, res) => {
       res.writeHead(200, {'Content-Type': 'text/html'})

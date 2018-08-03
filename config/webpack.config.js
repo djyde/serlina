@@ -7,32 +7,52 @@ module.exports = ({
   dev,
   pages = {}
 } = {}) => {
-  const common = {
+  const common = (hotReload) => ({
+    mode: 'development',
     resolve: {
       // Add `.ts` and `.tsx` as a resolvable extension.
-      extensions: [".ts", ".tsx", ".js"]
+      extensions: [".ts", ".tsx", ".js"],
+      modules: [
+        path.resolve(__dirname, '../node_modules'),
+        'node_modules'
+      ]
     },
     module: {
       rules: [
         // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
-        { test: /\.tsx?$/, loader: "ts-loader", options: {
-          configFile: path.resolve(baseDir, './tsconfig.json')
-        } }
+        {
+          test: /\.tsx?$/,
+          loader: "ts-loader",
+          exclude: /(node_modules)/,
+          options: {
+            configFile: path.resolve(baseDir, './tsconfig.json')
+          }
+        },
+        {
+          test: /\.js$/,
+          exclude: /(node_modules)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['env', 'react'],
+              plugins: [].concat(hotReload ? 'react-hot-loader/babel' : [])
+            }
+          }
+        }
       ]
     }
-  }
-  return [
-    {
+  })
+  return [{
       entry: pages,
       output: {
         filename: '[name].js',
         path: outputPath,
         publicPath,
-        library: '__celina',
+        library: '__serlina',
         globalObject: 'this',
         libraryTarget: 'umd'
       },
-      ...common
+      ...common()
     },
     {
       entry: {
@@ -43,7 +63,7 @@ module.exports = ({
         path: outputPath,
         publicPath,
       },
-      ...common
+      ...common(false)
     }
   ]
 }
