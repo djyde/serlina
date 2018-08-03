@@ -4,15 +4,17 @@ const WFP = require('write-file-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const merge = require('webpack-merge')
 
-module.exports = ({
-  customConfig = {},
-  baseDir,
-  outputPath,
-  publicPath,
-  dev,
-  pages = {}
-} = {}) => {
-  
+export default (options) => {
+
+  const {
+    customConfig = {},
+    baseDir,
+    outputPath,
+    publicPath,
+    dev,
+    pages = {}
+  } = options
+
   const common = merge({
     context: baseDir,
     mode: dev ? 'development' : 'production',
@@ -53,7 +55,7 @@ module.exports = ({
           exclude: /(node_modules)/,
           use: [
             MiniCssExtractPlugin.loader,
-            {loader: 'css-loader', options: { importLoaders: 1 }}
+            { loader: 'css-loader', options: { importLoaders: 1 } }
           ]
         }
       ]
@@ -70,28 +72,28 @@ module.exports = ({
   }, customConfig)
 
   return [{
-      entry: pages,
-      output: {
-        filename: '[name].js',
-        path: outputPath,
-        publicPath,
-        library: '__serlina',
-        globalObject: 'this',
-        libraryTarget: 'umd'
-      },
-      ...common
+    entry: pages,
+    output: {
+      filename: '[name].js',
+      path: outputPath,
+      publicPath,
+      library: '__serlina',
+      globalObject: 'this',
+      libraryTarget: 'umd'
     },
-    {
-      entry: {
-        main: [path.resolve(__dirname, '../client/render')],
-        vendors: ['babel-polyfill']
-      },
-      output: {
-        filename: '[name].js',
-        path: outputPath,
-        publicPath,
-      },
-      ...common
-    }
+    ...common
+  },
+  {
+    entry: {
+      main: [path.resolve(__dirname, '../client/render')],
+      vendors: ['babel-polyfill']
+    },
+    output: {
+      filename: '[name].js',
+      path: outputPath,
+      publicPath,
+    },
+    ...common
+  }
   ]
 }

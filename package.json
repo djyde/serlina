@@ -1,9 +1,14 @@
 {
   "name": "serlina",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Yet another React SSR framework, but server implementation open",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "start": "tsc --watch",
+    "build": "tsc",
     "test": "node ./test/sample"
   },
   "dependencies": {
@@ -25,6 +30,9 @@
     "write-file-webpack-plugin": "^4.3.2"
   },
   "devDependencies": {
+    "@types/node": "^10.5.5",
+    "@types/react": "^16.4.7",
+    "@types/react-dom": "^16.0.6",
     "react": "^16.4.2",
     "react-dom": "^16.4.2"
   }

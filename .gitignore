@@ -4,3 +4,4 @@ yarn.lock
 test/sample/public
 package-lock.json
 .serlina
+dist

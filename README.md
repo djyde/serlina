@@ -200,6 +200,26 @@ export default () => {
 
 TypeScript is support out of the box. Just add a `tsconfig.json` in your `baseDir`, and name the page with `.tsx`. That is!
 
+## Build
+
+```
+npm i
+```
+
+and install test fixtures dependencies if needed:
+
+```
+cd test/sample && npm i
+```
+
+```bash
+npm start # start compiling in watch mode
+
+npm build # compile 
+
+npm test # run a sample web server
+```
+
 # License
 
 MIT License

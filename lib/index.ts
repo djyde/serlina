@@ -1,12 +1,12 @@
-require('babel-polyfill')
+import 'babel-polyfill'
 const webpack = require('webpack')
-const makeWebpackConfig = require('./config/webpack.config')
-const fs = require('fs')
-const ReactDOMServer = require('react-dom/server')
-const path = require('path')
-const React = require('react')
+import makeWebpackConfig from './config/webpack.config'
+import * as fs from 'fs'
+import * as ReactDOMServer from 'react-dom/server'
+import * as path from 'path'
+import * as React from 'react'
 const WDS = require('webpack-dev-server')
-const Document = require('./components/Document')
+import Document from './components/Document'
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const DEV_SERVER_HOST = '127.0.0.1'
@@ -17,23 +17,39 @@ const noCacheRequire = (pkg) => {
   return require(pkg)
 }
 
+export interface SerlinaOptions {
+  baseDir: string,
+  outputPath?: string,
+  publicPath?: string,
+  dev?: boolean
+}
+
+export interface SerlinaInstanceOptions extends SerlinaOptions {
+  serlinaConfig: any
+}
+
 class Serlina {
 
-  constructor({
-    baseDir = '',
-    outputPath = path.resolve(baseDir, '.serlina'),
-    publicPath = 'http://' + DEV_SERVER_HOST + ':' + DEV_SERVER_PORT + '/',
-    serlinaConfig = fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {},
-    dev = true
-  } = {}) {
+  private resolveOutput;
+  private options: SerlinaInstanceOptions;
+  private injectedPayload = {}
+  private stats;
 
-    this.resolveApp = p => path.resolve(baseDir, p)
+  constructor(options: SerlinaOptions) {
+
+    const {
+      baseDir = '',
+      outputPath = path.resolve(baseDir, '.serlina'),
+      publicPath = 'http://' + DEV_SERVER_HOST + ':' + DEV_SERVER_PORT + '/',
+      dev = true
+    } = options
+
     this.resolveOutput = p => path.resolve(outputPath, p)
 
     this.options = {
       baseDir,
       dev,
-      serlinaConfig,
+      serlinaConfig: fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {},
       outputPath,
       publicPath
     }
@@ -128,7 +144,6 @@ class Serlina {
     const string = '<!DOCTYPE html>' + ReactDOMServer.renderToString(React.createElement(Document, {
       pageScripts,
       pageStyles,
-      pageName,
       publicPath: this.options.publicPath,
       initialProps
     }, React.createElement('div', {
