@@ -196,7 +196,7 @@ export default () => {
 }
 ```
 
-### Custom <head>
+### Custom `<head>`
 
 ```js
 // page/page1.js
