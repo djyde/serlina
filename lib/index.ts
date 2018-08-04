@@ -39,6 +39,7 @@ class Serlina {
 
     const {
       baseDir = '',
+      // @ts-ignore
       outputPath = path.resolve(baseDir, '.serlina'),
       publicPath = 'http://' + DEV_SERVER_HOST + ':' + DEV_SERVER_PORT + '/',
       dev = true

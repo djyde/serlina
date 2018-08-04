@@ -5,7 +5,8 @@
     "outDir": "dist",
     "jsx": "react",
     "moduleResolution": "node",
-    "declaration": true
+    "declaration": true,
+    "strictNullChecks": true
   },
   "include": [
     "lib"
