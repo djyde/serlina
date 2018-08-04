@@ -251,7 +251,7 @@ const app = new Serlina({
 {
   "scripts": {
     "start": "node server",
-    "build": "serlina build ./client --publicPath /public/"
+    "build": "serlina build . --publicPath /public/"
   }
 }
 ```
