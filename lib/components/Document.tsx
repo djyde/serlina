@@ -1,29 +1,33 @@
 import * as React from 'react'
 
 export interface DocumentProps {
-  pageStyles: {name: string}[],
-  pageScripts: {name: string}[],
+  pageStyles: {name: string, url: string}[],
+  pageScripts: {name: string, url: string}[],
   initialProps: any,
-  publicPath?: string,
+  publicPath: string,
   children?: React.ReactNode,
   helmet: any,
-  body: string
+  body: string,
+  pageName: string,
 }
 
 export default ({
   pageStyles,
   pageScripts,
   initialProps = {},
-  publicPath = '/',
+  publicPath,
   body,
+  pageName,
   helmet
 }: DocumentProps) => {
-  const scripts = pageScripts.map(script => publicPath + script.name).concat([
-    publicPath + 'main.js',
-  ])
 
-  const styles = pageStyles.map(style => publicPath + style.name).concat([
-  ])
+  const getScript = name => pageScripts.find(script => script.name === name)
+  
+  const vendors = getScript('vendors')
+  const page = getScript(pageName)
+  const main = getScript('main')
+
+  console.log(pageName)
 
   return (
     <html {...helmet.htmlAttributes.toComponent()}>
@@ -31,10 +35,10 @@ export default ({
         {helmet.title.toComponent()}
         {helmet.meta.toComponent()}
         {helmet.link.toComponent()}
-        {styles.map(style => {
-          return <link key={style} rel='stylesheet' href={style} />
+        {pageStyles.map(style => {
+          return <link key={style.name} rel='stylesheet' href={publicPath + style.url} />
         })}
-        <script src={publicPath + 'vendors.js'}></script>
+        { vendors && <script src={publicPath + vendors.url}></script>}
         <script dangerouslySetInnerHTML={{
           __html: `
         window.__serlina__DATA = {};
@@ -45,9 +49,8 @@ export default ({
       </head>
       <body {...helmet.bodyAttributes.toComponent()}>
         <div id="app" dangerouslySetInnerHTML={{ __html: body }} />
-        {scripts.map(script => {
-          return <script key={script} src={script}></script>
-        })}
+        { page && <script src={publicPath + page.url}></script> }
+        { main && <script src={publicPath + main.url}></script>}
       </body>
     </html>
   )

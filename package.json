@@ -3,9 +3,13 @@
   "version": "0.0.7",
   "description": "Yet another React SSR framework, but server implementation open",
   "main": "dist/index.js",
+  "bin": {
+    "serlina": "bin/serlina"
+  },
   "files": [
     "dist",
-    "head.js"
+    "head.js",
+    "bin"
   ],
   "scripts": {
     "start": "tsc --watch",
@@ -15,6 +19,7 @@
     "prepublish": "npm run clean && npm run build"
   },
   "dependencies": {
+    "assets-webpack-plugin": "^3.8.4",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-plugin-transform-regenerator": "^6.26.0",
@@ -24,21 +29,24 @@
     "css-loader": "^1.0.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "mini-css-extract-plugin": "^0.4.1",
+    "push-if": "^1.0.1",
     "react-helmet": "^5.2.0",
+    "rimraf": "^2.6.2",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.4.2",
     "typescript": "^3.0.1",
     "webpack": "^4.16.3",
     "webpack-dev-server": "^3.1.5",
     "webpack-merge": "^4.1.4",
-    "write-file-webpack-plugin": "^4.3.2"
+    "webpackbar": "^2.6.1",
+    "write-file-webpack-plugin": "^4.3.2",
+    "yargs": "^12.0.1"
   },
   "devDependencies": {
     "@types/node": "^10.5.5",
     "@types/react": "^16.4.7",
     "@types/react-dom": "^16.0.6",
     "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "rimraf": "^2.6.2"
+    "react-dom": "^16.4.2"
   }
 }

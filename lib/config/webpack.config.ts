@@ -1,10 +1,23 @@
+import { SerlinaInstanceOptions } from "../serlina";
+import 'push-if'
 const path = require('path')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const WFP = require('write-file-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const merge = require('webpack-merge')
+const AssetsWebpackPlugin = require('assets-webpack-plugin')
+const WebpackBar = require('webpackbar')
 
-export default (options) => {
+export interface MakeWebpackConfigOptions extends SerlinaInstanceOptions {
+  customConfig?: object,
+  baseDir: string,
+  outputPath: string,
+  publicPath: string,
+  dev: boolean,
+  pages: { [pageName: string]: string }
+}
+
+export default (options: MakeWebpackConfigOptions) => {
 
   const {
     customConfig = {},
@@ -14,6 +27,12 @@ export default (options) => {
     dev,
     pages = {}
   } = options
+
+  const assetsWebpackPlugin = new AssetsWebpackPlugin({
+    path: outputPath,
+    filename: 'assetsmap.json',
+    fullPath: false
+  })
 
   const common = merge({
     context: baseDir,
@@ -68,12 +87,14 @@ export default (options) => {
       }),
       new FriendlyErrorsWebpackPlugin()
     ]
+      .pushIf(!dev, assetsWebpackPlugin)
+      .pushIf(!dev, new WebpackBar())
   }, customConfig)
 
   return [{
     entry: pages,
     output: {
-      filename: '[name].js',
+      filename: dev ? '[name].js' : '[name]-[chunkhash].js',
       path: outputPath,
       publicPath,
       library: '__serlina',
@@ -88,7 +109,7 @@ export default (options) => {
       vendors: ['babel-polyfill', 'react', 'react-dom', 'react-helmet']
     },
     output: {
-      filename: '[name].js',
+      filename: dev ? '[name].js': '[name]-[chunkhash].js',
       path: outputPath,
       publicPath,
     },
