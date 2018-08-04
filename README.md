@@ -217,6 +217,45 @@ export default () => {
 }
 ```
 
+### Production deployment
+
+To deploy your Serlina application, you need to run a build command:
+
+```
+serlina build <baseDir>
+```
+
+For example, imagin you have a structure:
+
+```bash
+- index.js
+- page
+  - page1.js
+- package.json
+```
+
+After `serlina build .`, a `.serlina` folder will generate. You should serve it with your web server, or upload to CDN.
+
+Let's say your web server serve static files in `/public` route:
+
+```js
+// index.js
+const app = new Serlina({
+  dev: false, // turn dev mode to false
+  publicPath: '/public/'
+})
+```
+
+```json
+// package.json
+{
+  "scripts": {
+    "start": "node server",
+    "build": "serlina build ./client --publicPath /public/"
+  }
+}
+```
+
 ### TypeScript support
 
 TypeScript is support out of the box. Just add a `tsconfig.json` in your `baseDir`, and name the page with `.tsx`. That is!
