@@ -4,7 +4,8 @@
   "description": "Yet another React SSR framework, but server implementation open",
   "main": "dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "head.js"
   ],
   "scripts": {
     "start": "tsc --watch",
@@ -23,6 +24,7 @@
     "css-loader": "^1.0.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "mini-css-extract-plugin": "^0.4.1",
+    "react-helmet": "^5.2.0",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.4.2",
     "typescript": "^3.0.1",

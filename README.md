@@ -2,11 +2,11 @@
 
 [![npm](https://img.shields.io/npm/v/serlina.svg)](https://github.com/djyde/serlina)
 
-Yet another React SSR framework (core), but open for server implementation.
+A progressive React SSR framework that open for server integration.
 
 ## Motivation
 
-I love using [Next.js](https://github.com/zeit/next.js/), but most of my projects need to use our own web server framework while Next.js run it own server. So I begin making a SSR framework (core) that like Next.js but open for server implementation. It does all the building, compiling, rendering-to-string things and give the rest render-to-html things to server implementation.
+I love using [Next.js](https://github.com/zeit/next.js/), but most of my projects need to use our own web server framework while Next.js run it own server. So I begin making a SSR framework (core) that like Next.js but open for server implementation. It does all the building, compiling, rendering-to-string things and give the rest render-to-html things to your own web server.
 
 > Of course I know Next.js can [custom server and routing](https://github.com/zeit/next.js#custom-server-and-routing), but while Next.js handle the whole http `context`, [I cannot use it in a high layer web framework](https://github.com/eggjs/egg/issues/328).
 
@@ -41,7 +41,7 @@ And implement a most simple http server:
 ```js
 // index.js
 
-const Serlina = require('serlina')
+const { Serlina } = require('serlina')
 const path = require('path')
 
 const http = require('http')
@@ -193,6 +193,27 @@ If the page that render by `serlina.render()` is not exist, Serlina will render 
 
 export default () => {
   return <div>Page not found</div>
+}
+```
+
+### Custom <head>
+
+```js
+// page/page1.js
+
+import * as Reat from 'react'
+import Head from 'serlina/head'
+
+export default () => {
+  return (
+    <div>
+      <Head>
+        <title>Page1</title>
+      </Head>
+
+      <div>page1 content...</div>
+    </div>
+  )
 }
 ```
 

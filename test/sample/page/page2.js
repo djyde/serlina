@@ -1,5 +1,6 @@
 import React from 'react'
 import '../style/index.less'
+import Head from '../../../head'
 
 export default class Page2 extends React.Component {
 
@@ -12,6 +13,11 @@ export default class Page2 extends React.Component {
   render () {
     return (
       <div>
+        <Head>
+          <title>Page2</title>
+          <meta charSet="utf8" />
+        </Head>
+        <button onClick={e => alert('works')}>test</button>
         {this.props.foo}
       </div>
     )

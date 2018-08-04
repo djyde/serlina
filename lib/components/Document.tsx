@@ -4,8 +4,10 @@ export interface DocumentProps {
   pageStyles: {name: string}[],
   pageScripts: {name: string}[],
   initialProps: any,
-  publicPath: string,
-  children: React.ReactNode
+  publicPath?: string,
+  children?: React.ReactNode,
+  helmet: any,
+  body: string
 }
 
 export default ({
@@ -13,7 +15,8 @@ export default ({
   pageScripts,
   initialProps = {},
   publicPath = '/',
-  children
+  body,
+  helmet
 }: DocumentProps) => {
   const scripts = pageScripts.map(script => publicPath + script.name).concat([
     publicPath + 'main.js',
@@ -23,8 +26,11 @@ export default ({
   ])
 
   return (
-    <html>
+    <html {...helmet.htmlAttributes.toComponent()}>
       <head>
+        {helmet.title.toComponent()}
+        {helmet.meta.toComponent()}
+        {helmet.link.toComponent()}
         {styles.map(style => {
           return <link key={style} rel='stylesheet' href={style} />
         })}
@@ -37,10 +43,8 @@ export default ({
         }}>
         </script>
       </head>
-      <body>
-        <div id="app" date-reactroot="">
-          {children}
-        </div>
+      <body {...helmet.bodyAttributes.toComponent()}>
+        <div id="app" dangerouslySetInnerHTML={{ __html: body }} />
         {scripts.map(script => {
           return <script key={script} src={script}></script>
         })}

@@ -34,7 +34,6 @@ export default (options) => {
         {
           test: /\.tsx?$/,
           loader: "ts-loader",
-          exclude: /(node_modules)/,
           options: {
             configFile: path.resolve(baseDir, './tsconfig.json')
           }
@@ -86,7 +85,7 @@ export default (options) => {
   {
     entry: {
       main: [path.resolve(__dirname, '../client/render')],
-      vendors: ['babel-polyfill']
+      vendors: ['babel-polyfill', 'react', 'react-dom', 'react-helmet']
     },
     output: {
       filename: '[name].js',

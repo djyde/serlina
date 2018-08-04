@@ -1,4 +1,4 @@
-const Serlina = require('../..')
+const { Serlina } = require('../..')
 const path = require('path')
 
 const http = require('http')
