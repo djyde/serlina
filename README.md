@@ -70,7 +70,7 @@ Open `http://localhost:8090/page1`, you will see the page you wrote in React!
 
 ## Documentation
 
-Visit https://djyde.github.io/serlina 
+Visit [Doc](https://github.com/djyde/serlina/blob/master/docs/README.md)
 
 ## Development
 
@@ -84,6 +84,8 @@ npm start # start compiling in watch mode
 npm build # compile 
 
 npm test # run a sample web server
+
+npm run doc # run the doc
 ```
 
 # License
