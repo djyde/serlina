@@ -14,7 +14,7 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
-    "doc": "docute ./doc",
+    "doc": "docute ./docs",
     "clean": "rimraf dist",
     "test": "node ./test/sample",
     "prepublish": "npm run clean && npm run build"
