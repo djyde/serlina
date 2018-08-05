@@ -5,10 +5,15 @@ import * as fs from 'fs'
 import * as ReactDOMServer from 'react-dom/server'
 import * as path from 'path'
 import * as React from 'react'
-import Head from './components/Head'
 const WDS = require('webpack-dev-server')
 import Document from './components/Document'
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+import { Helmet } from 'react-helmet'
+// @ts-ignore
+global.Helmet = Helmet
+
+import Head from './components/Head'
 
 const DEV_SERVER_HOST = '127.0.0.1'
 const DEV_SERVER_PORT = 3000
