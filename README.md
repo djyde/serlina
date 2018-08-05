@@ -70,11 +70,11 @@ Open `http://localhost:8090/page1`, you will see the page you wrote in React!
 
 ## Documentation
 
-Visit [Doc](https://github.com/djyde/serlina/blob/master/docs/README.md)
+Visit [Full Doc](https://serlina.js.org)
 
 ## Development
 
-```
+```bash
 npm i
 
 cd test/sample && npm i
