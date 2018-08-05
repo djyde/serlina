@@ -10,6 +10,10 @@ I love using [Next.js](https://github.com/zeit/next.js/), but most of my project
 
 > Of course I know Next.js can [custom server and routing](https://github.com/zeit/next.js#custom-server-and-routing), but while Next.js handle the whole http `context`, [I cannot use it in a high layer web framework](https://github.com/eggjs/egg/issues/328).
 
+## Integrations
+
+- Egg: [egg-serlina](https://github.com/serlina-community/egg-serlina)
+
 ## Get start
 
 Create a folder structure like:
