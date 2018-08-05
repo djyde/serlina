@@ -14,6 +14,7 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
+    "doc": "docute ./doc",
     "clean": "rimraf dist",
     "test": "node ./test/sample",
     "prepublish": "npm run clean && npm run build"
@@ -46,6 +47,7 @@
     "@types/node": "^10.5.5",
     "@types/react": "^16.4.7",
     "@types/react-dom": "^16.0.6",
+    "docute": "^3.4.12",
     "react": "^16.4.2",
     "react-dom": "^16.4.2"
   }
