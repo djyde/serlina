@@ -27,8 +27,6 @@ export default ({
   const page = getScript(pageName)
   const main = getScript('main')
 
-  console.log(pageName)
-
   return (
     <html {...helmet.htmlAttributes.toComponent()}>
       <head>

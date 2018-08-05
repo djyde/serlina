@@ -155,7 +155,7 @@ class Serlina {
     this._injectedPayload = payload
   }
 
-  async render(pageName) {
+  async render(pageName, injectedPayload) {
     if (pageName.startsWith('/')) pageName = pageName.replace('/', '')
     let page;
 
@@ -187,7 +187,7 @@ class Serlina {
       }
     }
 
-    const initialProps = page.default.getInitialProps ? await page.default.getInitialProps(this._injectedPayload) : {}
+    const initialProps = page.default.getInitialProps ? await page.default.getInitialProps(Object.assign({}, this._injectedPayload, injectedPayload)) : {}
 
     let pageScripts = [] as {name: string, url: string}[]
     let pageStyles = [] as {name: string, url: string}[]

@@ -115,6 +115,12 @@ export default class Page1 extends React.Component {
 
 ```
 
+Otherwise, you could inject the payload when calling `serlina.render`:
+
+```js
+const rendered = await serlina.render('page1', { ctx: 'some context' })
+```
+
 ### Styles
 
 #### plain css
