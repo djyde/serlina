@@ -28,7 +28,8 @@ export interface SerlinaOptions {
   outputPath?: string,
   publicPath?: string,
   dev?: boolean,
-  forceBuild?: boolean
+  forceBuild?: boolean,
+  __testing?: boolean
 }
 
 export interface SerlinaInstanceOptions extends SerlinaOptions {
@@ -55,7 +56,8 @@ class Serlina {
       dev = true,
       // @ts-ignore
       publicPath = '/',
-      forceBuild = false
+      forceBuild = false,
+      __testing
     } = options
 
     if (dev) {
@@ -63,12 +65,13 @@ class Serlina {
     }
 
     return {
+      __testing,
+      serlinaConfig: fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {},
       baseDir,
       dev,
-      serlinaConfig: fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {},
       outputPath,
       publicPath,
-      forceBuild
+      forceBuild,
     }
   }
 
@@ -119,40 +122,37 @@ class Serlina {
 
     const webpackConfig = Serlina._makeWebpackConfig(this.options)
 
-    return new Promise((res, rej) => {
-      webpack(webpackConfig, (err, stats) => {
-        if (err) {
-          // Handle errors here
-          rej(err)
-        } else {
-          this.stats = stats.toJson({
-            assets: true
-          })
-  
-          if (this.options.dev === true) {
-  
-            const devServerOptions = {
-              host: DEV_SERVER_HOST,
-              port: DEV_SERVER_PORT,
-              quiet: true,
-              headers: {
-                "Access-Control-Allow-Origin": "*"
-              }
-            }
-  
-            const compiler = webpack(webpackConfig)
-            const devServer = new WDS(compiler, devServerOptions)
-  
-            devServer.listen(DEV_SERVER_PORT, DEV_SERVER_HOST, () => {
-              res()
-            })
-  
-          } else {
-            return res()
-          }
+    if (this.options.dev === true && this.options.__testing !== true) {
+      const devServerOptions = {
+        host: DEV_SERVER_HOST,
+        port: DEV_SERVER_PORT,
+        quiet: true,
+        headers: {
+          "Access-Control-Allow-Origin": "*"
         }
+      }
+
+      const compiler = webpack(webpackConfig)
+      const devServer = new WDS(compiler, devServerOptions)
+
+      return new Promise((res) => {
+        devServer.listen(DEV_SERVER_PORT, DEV_SERVER_HOST, res)
       })
-    })
+    }
+
+    if (this.options.__testing) {
+      return new Promise((res, rej) => {
+        webpack(webpackConfig, (err, stats) => {
+          if (err) {
+            rej(err)
+          }
+          // console.log(stats.toString({
+          //   color: true
+          // }))
+          res(stats.toJson())
+        })
+      })
+    }
   }
 
   inject(payload) {
@@ -191,25 +191,21 @@ class Serlina {
       }
     }
 
-    const initialProps = page.default.getInitialProps ? await page.default.getInitialProps(Object.assign({}, this._injectedPayload, injectedPayload)) : {}
+    const injected = Object.assign({}, this._injectedPayload, injectedPayload)
+    const initialProps = page.default.getInitialProps ? await page.default.getInitialProps(injected) : {}
 
     let pageScripts = [] as {name: string, url: string}[]
     let pageStyles = [] as {name: string, url: string}[]
 
     if (this.options.dev) {
-      const pageAssets = this.stats.children[0].assets
-      const chunks = pageAssets.filter(asset => asset.chunkNames.indexOf(pageName) !== -1)
       pageScripts = [
         { name: pageName, url: pageName + '.js' },
         { name: 'vendors', url: 'vendors.js' },
         { name: 'main', url: 'main.js' }
       ]
-      pageStyles = chunks.filter(asset => asset.name.split('.').pop() === 'css').map(asset => {
-        return {
-          name: asset.name,
-          url: asset.name
-        }
-      })
+      pageStyles = [
+        { name: pageName, url: pageName + '.css' }
+      ]
     } else {
       pageScripts = [
         { name: 'vendors', url: this.assetsMap['vendors'].js },
@@ -224,6 +220,9 @@ class Serlina {
     }
 
     const body = ReactDOMServer.renderToString(React.createElement(page.default, initialProps))
+    if (this.options.__testing) {
+      Head.canUseDOM = false
+    }
     const helmet = Head.renderStatic()
 
     const string = '<!DOCTYPE html>' + ReactDOMServer.renderToString(React.createElement(Document, {
@@ -237,7 +236,10 @@ class Serlina {
     }))
 
     return {
-      string
+      string,
+      __injected: injected,
+      __pageScripts: pageScripts,
+      __pageStyles: pageStyles,
     }
   }
 }

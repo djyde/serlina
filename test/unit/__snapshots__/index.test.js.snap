@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Serlina snapshot 1`] = `"<!DOCTYPE html><html data-reactroot=\\"\\"><head><title data-react-helmet=\\"true\\"></title><link rel=\\"stylesheet\\" href=\\"http://127.0.0.1:3000/page1.css\\"/><script src=\\"http://127.0.0.1:3000/vendors.js\\"></script><script>window.__serlina__DATA={};window.__serlina__DATA.pageInitialProps={};</script></head><body><div id=\\"app\\"><div data-reactroot=\\"\\">Page1</div></div><script src=\\"http://127.0.0.1:3000/page1.js\\"></script><script src=\\"http://127.0.0.1:3000/main.js\\"></script></body></html>"`;
