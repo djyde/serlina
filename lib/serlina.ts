@@ -121,36 +121,35 @@ class Serlina {
 
     return new Promise((res, rej) => {
       webpack(webpackConfig, (err, stats) => {
-        if (err || stats.hasErrors()) {
+        if (err) {
           // Handle errors here
-          rej(err || stats.toString({
-            colors: true
-          }))
-        }
-        this.stats = stats.toJson({
-          assets: true
-        })
-
-        if (this.options.dev === true) {
-
-          const devServerOptions = {
-            host: DEV_SERVER_HOST,
-            port: DEV_SERVER_PORT,
-            quiet: true,
-            headers: {
-              "Access-Control-Allow-Origin": "*"
-            }
-          }
-
-          const compiler = webpack(webpackConfig)
-          const devServer = new WDS(compiler, devServerOptions)
-
-          devServer.listen(DEV_SERVER_PORT, DEV_SERVER_HOST, () => {
-            res()
-          })
-
+          rej(err)
         } else {
-          return res()
+          this.stats = stats.toJson({
+            assets: true
+          })
+  
+          if (this.options.dev === true) {
+  
+            const devServerOptions = {
+              host: DEV_SERVER_HOST,
+              port: DEV_SERVER_PORT,
+              quiet: true,
+              headers: {
+                "Access-Control-Allow-Origin": "*"
+              }
+            }
+  
+            const compiler = webpack(webpackConfig)
+            const devServer = new WDS(compiler, devServerOptions)
+  
+            devServer.listen(DEV_SERVER_PORT, DEV_SERVER_HOST, () => {
+              res()
+            })
+  
+          } else {
+            return res()
+          }
         }
       })
     })
@@ -165,9 +164,7 @@ class Serlina {
     let page;
 
     if (this.options.dev) {
-      try {
-        page = noCacheRequire(this.resolveOutput(pageName + '.js'))
-      } catch (e) {
+      if (!fs.existsSync((this.resolveOutput(pageName + '.js')))) {
         pageName = '_404'
         if (fs.existsSync(this.resolveOutput('./_404.js'))) {
           page = noCacheRequire(this.resolveOutput('./_404.js'))
@@ -176,11 +173,11 @@ class Serlina {
             default: noCacheRequire('./components/_404')
           }
         }
+      } else {
+        page = noCacheRequire(this.resolveOutput(pageName + '.js'))
       }
     } else {
-      try {
-        page = require(this.resolveOutput('./', this.assetsMap[pageName].js))
-      } catch (e) {
+      if (!fs.existsSync((this.resolveOutput(pageName + '.js')))) {
         pageName = '_404'
         if (this.assetsMap['_404']) {
           page = require(this.resolveOutput('./', this.assetsMap['_404'].js))
@@ -189,6 +186,8 @@ class Serlina {
             default: noCacheRequire('./components/_404')
           }
         }
+      } else {
+        page = require(this.resolveOutput('./', this.assetsMap[pageName].js))
       }
     }
 

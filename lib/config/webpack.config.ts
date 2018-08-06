@@ -34,7 +34,7 @@ export default (options: MakeWebpackConfigOptions) => {
     fullPath: false
   })
 
-  const common = merge({
+  const common = merge.smart({
     context: baseDir,
     mode: dev ? 'development' : 'production',
     resolve: {
@@ -55,7 +55,8 @@ export default (options: MakeWebpackConfigOptions) => {
           loader: "ts-loader",
           options: {
             configFile: path.resolve(baseDir, './tsconfig.json')
-          }
+          },
+          exclude: /node_modules/,
         },
         {
           test: /\.js$/,
