@@ -11,6 +11,7 @@
   <div id="app"></div>
   <script src="https://unpkg.com/docute@3/dist/docute.js"></script>
   <script src="https://unpkg.com/prismjs@1.15.0/components/prism-diff.js"></script>
+  <script src="https://unpkg.com/docute-evanyou"></script>
 
   <script>
     docute.init({
@@ -18,8 +19,24 @@
       nav: [
         { title: 'Guide', path: '/' },
         { title: 'API Reference', path: '/api' }
+      ],
+      plugins: [
+        evanyou()
       ]
     })
   </script>
+
+  <!-- Google Analytics -->
+<script>
+  window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+  ga('create', 'UA-57278918-4', 'auto');
+  ga('send', 'pageview');
+  docute.router.afterEach(function (to) {
+    ga('set', 'page', to.fullPath);
+    ga('send', 'pageview');
+  });
+  </script>
+  <script async src='https://www.google-analytics.com/analytics.js'></script>
+  <!-- End Google Analytics -->
 </body>
 </html>
