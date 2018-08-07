@@ -8,6 +8,7 @@ import * as React from 'react'
 const WDS = require('webpack-dev-server')
 import Document from './components/Document'
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const merge = require('webpack-merge')
 
 import { Helmet } from 'react-helmet'
 // @ts-ignore
@@ -94,7 +95,10 @@ class Serlina {
       ...options,
       pages: Serlina._getPageEntries(options),
       customConfig: options.serlinaConfig.webpack ? options.serlinaConfig.webpack(webpack, {
-        miniCSSLoader: MiniCssExtractPlugin.loader
+        miniCSSLoader: MiniCssExtractPlugin.loader,
+        dev: options.dev,
+        merge: merge.smart,
+        baseDir: options.baseDir
       }) : {}
     })
   }

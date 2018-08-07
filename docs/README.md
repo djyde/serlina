@@ -187,7 +187,17 @@ module.exports = {
 }
 ```
 
-You need to return a webpack config object. Which will be merge into default config using [`webpack-merge`](https://github.com/survivejs/webpack-merge)
+The configuration you return will merged to the default configuration using [`wepback-merge`](https://github.com/survivejs/webpack-merge#mergesmartconfiguration-configuration)
+
+#### options
+
+`options` is an object that contains:
+
+- `dev` **boolean**. dev mode.
+- `miniCSSLoader` Actually the `MiniCssExtractPlugin.loader`. Use in place of `style-loader`
+- `baseDir` **string** Serlina application baseDir
+- `merge` The [merge.smart](https://github.com/survivejs/webpack-merge#mergesmartconfiguration-configuration) function.
+
 
 ### Custom Babel config
 
