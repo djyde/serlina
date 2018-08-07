@@ -46,6 +46,10 @@ Render a page.
 - `pageName` can start with `/` or not.
 - Passing `payload` can inject payload just like `serlina.injectPayload` but to specific page. It will be merge with the payload injected by `serlina.injectPayload`
 
+`Rendered` is an object contains:
+
+- `string` The React page rendered string. Usually send it to the client.
+
 <p class="warning">Don't call `serlina.render()` before `prepare()` resolving.</p>
 
 ## Command Line Tool
