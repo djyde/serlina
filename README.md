@@ -3,7 +3,7 @@
 [![downloads](https://badgen.net/npm/dm/serlina)](https://npm.im/serlina)
 [![CircleCI](https://circleci.com/gh/djyde/serlina.svg?style=shield)](https://circleci.com/gh/djyde/serlina)
 
-A progressive React SSR framework that open for server integration.
+A progressive React serverside-rendering framework.
 
 ## Motivation
 
