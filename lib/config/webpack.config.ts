@@ -100,7 +100,7 @@ export default (options: MakeWebpackConfigOptions) => {
       '_SERLINA_MAIN': path.resolve(__dirname, '../client/render')
     },
     externals: {
-      react: 'React',
+      react: 'react',
       'react-dom': 'ReactDOM'
     },
     output: {

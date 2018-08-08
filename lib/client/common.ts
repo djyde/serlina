@@ -2,6 +2,6 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
 // @ts-ignore
-global.React = React
+global.React = global.react = React
 // @ts-ignore
 global.ReactDOM = ReactDOM
