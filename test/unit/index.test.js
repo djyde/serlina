@@ -2,7 +2,8 @@ const { Serlina } = require('../../dist')
 const path = require('path')
 
 const GLOBAL_PAYLOAD = { foo: 'foo' }
-const PAGE_NAME = 'page1'
+const PAGE1 = 'page1' // don't have style
+const PAGE2 = 'page2' // have style
 
 describe('Serlina', () => {
 
@@ -18,28 +19,41 @@ describe('Serlina', () => {
   })
 
   test('snapshot', async () => {
-    const rendered = await app.render(PAGE_NAME)
+    const rendered = await app.render(PAGE1)
     expect(rendered.string).toMatchSnapshot()
+    const rendered2 = await app.render(PAGE2)
+    expect(rendered2.string).toMatchSnapshot()
   })
 
   test('inject', async () => {
     const payload = {
       bar: 'bar'
     }
-    const rendered = await app.render(PAGE_NAME,payload)
+    const rendered = await app.render(PAGE1,payload)
     expect(rendered.__injected).toEqual(Object.assign({},GLOBAL_PAYLOAD, payload))
   })
 
   test('page assets', async () => {
-    const rendered = await app.render(PAGE_NAME)
+    const rendered = await app.render(PAGE1)
     expect(rendered.__pageScripts).toEqual([
-      { name: PAGE_NAME, url: PAGE_NAME + '.js' },
-      { name: 'vendors', url: 'vendors.js' },
-      { name: 'main', url: 'main.js' }
+      PAGE1 + '.js',
+      '_SERLINA_VENDOR.js',
+      '_SERLINA_MAIN.js'
+    ])
+
+    expect(rendered.__pageStyles).toEqual([])
+  })
+
+  test('page assets (have style)', async () => {
+    const rendered = await app.render(PAGE2)
+    expect(rendered.__pageScripts).toEqual([
+      PAGE2 + '.js',
+      '_SERLINA_VENDOR.js',
+      '_SERLINA_MAIN.js'
     ])
 
     expect(rendered.__pageStyles).toEqual([
-      { name: PAGE_NAME, url: PAGE_NAME + '.css' }
+      PAGE2 + '.css'
     ])
   })
 
@@ -47,13 +61,9 @@ describe('Serlina', () => {
     const rendered = await app.render('non-exist')
 
     expect(rendered.__pageScripts).toEqual([
-      { name: '_404', url: '_404' + '.js' },
-      { name: 'vendors', url: 'vendors.js' },
-      { name: 'main', url: 'main.js' }
-    ])
-
-    expect(rendered.__pageStyles).toEqual([
-      { name: '_404', url: '_404' + '.css' }
+      '_404.js',
+      '_SERLINA_VENDOR.js',
+      '_SERLINA_MAIN.js'
     ])
   })
 })
