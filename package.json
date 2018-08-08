@@ -1,6 +1,6 @@
 {
   "name": "serlina",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A progressive React serverside-rendering framework",
   "main": "dist/index.js",
   "bin": {
@@ -20,7 +20,7 @@
     "doc": "docute ./docs",
     "clean": "rimraf dist",
     "demo": "node ./test/sample",
-    "test": "jest",
+    "test": "npm run build && jest",
     "prepublish": "npm run clean && npm run build"
   },
   "dependencies": {
@@ -43,6 +43,7 @@
     "webpack": "^4.16.3",
     "webpack-dev-server": "^3.1.5",
     "webpack-merge": "^4.1.4",
+    "webpack-serve": "^2.0.2",
     "webpackbar": "^2.6.1",
     "write-file-webpack-plugin": "^4.3.2",
     "yargs": "^12.0.1"

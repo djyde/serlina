@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 export interface DocumentProps {
-  pageStyles: {name: string, url: string}[],
-  pageScripts: {name: string, url: string}[],
+  pageStyles: string[],
+  pageScripts: string[],
   initialProps: any,
   publicPath: string,
   children?: React.ReactNode,
@@ -21,11 +21,11 @@ export default ({
   helmet
 }: DocumentProps) => {
 
-  const getScript = name => pageScripts.find(script => script.name === name)
+  const scripts = [...pageScripts]
   
-  const vendors = getScript('vendors')
-  const page = getScript(pageName)
-  const main = getScript('main')
+  const main = scripts.pop()
+  const vendors = scripts.pop()
+  const page = scripts
 
   return (
     <html {...helmet.htmlAttributes.toComponent()}>
@@ -33,10 +33,10 @@ export default ({
         {helmet.title.toComponent()}
         {helmet.meta.toComponent()}
         {helmet.link.toComponent()}
-        {pageStyles.map(style => {
-          return <link key={style.name} rel='stylesheet' href={publicPath + style.url} />
+        {pageStyles.map(url => {
+          return <link key={url} rel='stylesheet' href={publicPath + url} />
         })}
-        { vendors && <script src={publicPath + vendors.url}></script>}
+        { <script src={publicPath + vendors}></script>}
         <script dangerouslySetInnerHTML={{
           __html: `
         window.__serlina__DATA = {};
@@ -47,8 +47,8 @@ export default ({
       </head>
       <body {...helmet.bodyAttributes.toComponent()}>
         <div id="app" dangerouslySetInnerHTML={{ __html: body }} />
-        { page && <script src={publicPath + page.url}></script> }
-        { main && <script src={publicPath + main.url}></script>}
+        { <script src={publicPath + page}></script> }
+        { <script src={publicPath + main}></script>}
       </body>
     </html>
   )
