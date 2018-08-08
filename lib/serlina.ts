@@ -45,8 +45,8 @@ class Serlina {
   private resolveOutput;
   private options: SerlinaInstanceOptions;
   private _injectedPayload = {}
-  private stats;
-  private assetsMap;
+  private chunks;
+  private assetsMap
 
   static _makeDefualtOptions = (options: SerlinaOptions): SerlinaInstanceOptions => {
 
@@ -90,9 +90,10 @@ class Serlina {
     return pages
   }
 
-  static _makeWebpackConfig = (options: SerlinaInstanceOptions) => {
+  static _makeWebpackConfig = (options: SerlinaInstanceOptions, plugins = [] as any[]) => {
     return makeWebpackConfig({
       ...options,
+      plugins,
       pages: Serlina._getPageEntries(options),
       customConfig: options.serlinaConfig.webpack ? options.serlinaConfig.webpack(webpack, {
         miniCSSLoader: MiniCssExtractPlugin.loader,
@@ -106,6 +107,21 @@ class Serlina {
   constructor(options: SerlinaOptions) {
     this.options = Serlina._makeDefualtOptions(options)
     this.resolveOutput = (...args) => path.resolve.call(null, this.options.outputPath, ...args)
+  }
+
+  serlinaWebpackPlugin = {
+    apply: (compiler) => {
+      compiler.hooks.done.tap('serlina', (stats) => {
+        const statsJson = stats.toJson({
+        })
+
+        const { chunks } = statsJson
+        
+        if (!chunks.find(chunk => chunk.id === '_SERLINA_VENDOR')) {
+          this.chunks = chunks
+        }
+      })
+    }
   }
 
   prepare() {
@@ -124,16 +140,12 @@ class Serlina {
       }
     }
 
-    const webpackConfig = Serlina._makeWebpackConfig(this.options)
+    const webpackConfig = Serlina._makeWebpackConfig(this.options, [this.serlinaWebpackPlugin])
 
     if (this.options.dev === true && this.options.__testing !== true) {
       const devServerOptions = {
-        host: DEV_SERVER_HOST,
-        port: DEV_SERVER_PORT,
         quiet: true,
-        headers: {
-          "Access-Control-Allow-Origin": "*"
-        }
+
       }
 
       const compiler = webpack(webpackConfig)
@@ -150,9 +162,6 @@ class Serlina {
           if (err) {
             rej(err)
           }
-          // console.log(stats.toString({
-          //   color: true
-          // }))
           res(stats.toJson())
         })
       })
@@ -164,6 +173,7 @@ class Serlina {
   }
 
   async render(pageName, injectedPayload) {
+
     if (pageName.startsWith('/')) pageName = pageName.replace('/', '')
     let page;
 
@@ -198,29 +208,36 @@ class Serlina {
     const injected = Object.assign({}, this._injectedPayload, injectedPayload)
     const initialProps = page.default.getInitialProps ? await page.default.getInitialProps(injected) : {}
 
-    let pageScripts = [] as {name: string, url: string}[]
-    let pageStyles = [] as {name: string, url: string}[]
+    let pageScripts = [] as string[]
+    let pageStyles = [] as string[]
 
     if (this.options.dev) {
-      pageScripts = [
-        { name: pageName, url: pageName + '.js' },
-        { name: 'vendors', url: 'vendors.js' },
-        { name: 'main', url: 'main.js' }
-      ]
-      pageStyles = [
-        { name: pageName, url: pageName + '.css' }
-      ]
+      const pageChunk = this.chunks.find(chunk => chunk.id === pageName)
+
+      let files = [] as string[]
+
+      if (pageChunk) {
+        files = pageChunk.files
+      } else if (pageName === '_404') {
+        files = files.concat([
+          '_404.js'
+        ])
+      }
+
+      pageScripts = files.filter(file => file.endsWith('.js')).concat([
+        '_SERLINA_VENDOR.js',
+        '_SERLINA_MAIN.js'
+      ])
+
+      pageStyles = files.filter(file => file.endsWith('.css'))
+
     } else {
       pageScripts = [
-        { name: 'vendors', url: this.assetsMap['vendors'].js },
-        { name: pageName, url: this.assetsMap[pageName].js },
-        { name: 'main', url: this.assetsMap['main'].js }
+        this.assetsMap[pageName].js,
+        this.assetsMap['_SERLINA_VENDOR'].js,
+        this.assetsMap['_SERLINA_MAIN'].js
       ]
-      if (this.assetsMap[pageName].css) {
-        pageStyles = [
-          { name: pageName, url: this.assetsMap[pageName].css }
-        ]
-      }
+      pageStyles = [].pushIf(this.assetsMap[pageName].css, this.assetsMap[pageName])
     }
 
     const body = ReactDOMServer.renderToString(React.createElement(page.default, initialProps))

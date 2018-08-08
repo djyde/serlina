@@ -2,22 +2,24 @@ import { SerlinaInstanceOptions } from "../serlina";
 import 'push-if'
 const path = require('path')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
-const WFP = require('write-file-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const merge = require('webpack-merge')
 const AssetsWebpackPlugin = require('assets-webpack-plugin')
 const WebpackBar = require('webpackbar')
+const WFP = require('write-file-webpack-plugin')
 
 export interface MakeWebpackConfigOptions extends SerlinaInstanceOptions {
   customConfig?: object,
   baseDir: string,
   outputPath: string,
   publicPath: string,
+  plugins: any[],
   dev: boolean,
   pages: { [pageName: string]: string }
 }
 
 export default (options: MakeWebpackConfigOptions) => {
+
 
   const {
     customConfig = {},
@@ -25,8 +27,11 @@ export default (options: MakeWebpackConfigOptions) => {
     outputPath,
     publicPath,
     dev,
+    plugins,
     pages = {}
   } = options
+  
+  console.log(path.resolve(__dirname, `../../node_modules/react/umd/react.${dev ? 'development' : 'production'}.js`))
 
   const assetsWebpackPlugin = new AssetsWebpackPlugin({
     path: outputPath,
@@ -80,9 +85,8 @@ export default (options: MakeWebpackConfigOptions) => {
       ]
     },
     plugins: [
-      new WFP({
-        test: /(\.js$)/
-      }),
+      ...plugins,
+      new WFP(),
       new MiniCssExtractPlugin({
         filename: '[name].css'
       }),
@@ -92,8 +96,15 @@ export default (options: MakeWebpackConfigOptions) => {
       .pushIf(!dev, new WebpackBar())
   }, customConfig)
 
-  return [{
-    entry: pages,
+  return [merge.smart({
+    entry: {
+     ...pages,
+      '_SERLINA_MAIN': path.resolve(__dirname, '../client/render')
+    },
+    externals: {
+      react: 'React',
+      'react-dom': 'ReactDOM'
+    },
     output: {
       filename: dev ? '[name].js' : '[name]-[chunkhash].js',
       path: outputPath,
@@ -102,19 +113,20 @@ export default (options: MakeWebpackConfigOptions) => {
       globalObject: 'this',
       libraryTarget: 'umd'
     },
-    ...common
-  },
-  {
+  }, common),
+
+  merge.smart({
     entry: {
-      main: [path.resolve(__dirname, '../client/render')],
-      vendors: ['babel-polyfill', 'react', 'react-dom', 'react-helmet']
+      '_SERLINA_VENDOR': [
+        'babel-polyfill',
+        path.resolve(__dirname, '../client/common')
+      ]
     },
     output: {
-      filename: dev ? '[name].js': '[name]-[chunkhash].js',
+      filename: dev ? '[name].js' : '[name]-[chunkhash].js',
       path: outputPath,
       publicPath,
-    },
-    ...common
-  }
+    }
+  }, common)
   ]
 }
