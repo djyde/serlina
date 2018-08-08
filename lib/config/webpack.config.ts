@@ -101,7 +101,7 @@ export default (options: MakeWebpackConfigOptions) => {
     },
     externals: {
       react: 'react',
-      'react-dom': 'ReactDOM'
+      'react-dom': 'react-dom'
     },
     output: {
       filename: dev ? '[name].js' : '[name]-[chunkhash].js',
