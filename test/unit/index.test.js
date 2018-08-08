@@ -57,6 +57,11 @@ describe('Serlina', () => {
     ])
   })
 
+  test('get initial props', async () => {
+    const rendered = await app.render(PAGE2)
+    expect(rendered.__initialProps).toEqual({ foo: 'foo' })
+  })
+
   test('render a non exist page', async () => {
     const rendered = await app.render('non-exist')
 

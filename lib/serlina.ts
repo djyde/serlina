@@ -259,6 +259,7 @@ class Serlina {
     return {
       string,
       __injected: injected,
+      __initialProps: initialProps,
       __pageScripts: pageScripts,
       __pageStyles: pageStyles,
     }
