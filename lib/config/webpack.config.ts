@@ -30,8 +30,6 @@ export default (options: MakeWebpackConfigOptions) => {
     plugins,
     pages = {}
   } = options
-  
-  console.log(path.resolve(__dirname, `../../node_modules/react/umd/react.${dev ? 'development' : 'production'}.js`))
 
   const assetsWebpackPlugin = new AssetsWebpackPlugin({
     path: outputPath,
