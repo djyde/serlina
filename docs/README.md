@@ -275,7 +275,3 @@ const app = new Serlina({
   }
 }
 ```
-
-### TypeScript support
-
-TypeScript is support out of the box. Just add a `tsconfig.json` in your `baseDir`, and name the page with `.tsx`. That is!
