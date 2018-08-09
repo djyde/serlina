@@ -275,3 +275,10 @@ const app = new Serlina({
   }
 }
 ```
+
+## FAQ
+
+### How to detect browser or server?
+
+`process.browser` return a `boolean`
+

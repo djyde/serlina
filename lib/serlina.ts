@@ -193,15 +193,15 @@ class Serlina {
     } else {
       if (!fs.existsSync((this.resolveOutput(pageName + '.cmd.js')))) {
         pageName = '_404'
-        if (this.assetsMap['_404']) {
-          page = require(this.resolveOutput('./', this.assetsMap['_404'].js))
+        if (!fs.existsSync(this.resolveOutput('./404.cmd.js'))) {
+          page = require(this.resolveOutput('./404.cmd.js'))
         } else {
           page = {
             default: require('./components/_404.cmd')
           }
         }
       } else {
-        page = require(this.resolveOutput('./', this.assetsMap[pageName].js))
+        page = require(this.resolveOutput(`./${pageName}.cmd.js`))
       }
     }
 
