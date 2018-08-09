@@ -41,7 +41,7 @@ export default ({
           __html: `
         window.__serlina__DATA = {};
         window.__serlina__DATA.pageInitialProps = ${JSON.stringify(initialProps)};
-      `.replace(/\s/g, '')
+      `
         }}>
         </script>
       </head>
