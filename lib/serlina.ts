@@ -117,7 +117,7 @@ class Serlina {
 
         const { chunks } = statsJson
         
-        if (!chunks.find(chunk => chunk.id === '_SERLINA_VENDOR')) {
+        if (chunks.find(chunk => chunk.id === '_SERLINA_MAIN')) {
           this.chunks = chunks
         }
       })
@@ -178,26 +178,26 @@ class Serlina {
     let page;
 
     if (this.options.dev) {
-      if (!fs.existsSync((this.resolveOutput(pageName + '.js')))) {
+      if (!fs.existsSync((this.resolveOutput(pageName + '.cmd.js')))) {
         pageName = '_404'
-        if (fs.existsSync(this.resolveOutput('./_404.js'))) {
-          page = noCacheRequire(this.resolveOutput('./_404.js'))
+        if (fs.existsSync(this.resolveOutput('./_404.cmd.js'))) {
+          page = noCacheRequire(this.resolveOutput('./_404.cmd.js'))
         } else {
           page = {
-            default: noCacheRequire('./components/_404')
+            default: require('./components/_404')
           }
         }
       } else {
-        page = noCacheRequire(this.resolveOutput(pageName + '.js'))
+        page = noCacheRequire(this.resolveOutput(pageName + '.cmd.js'))
       }
     } else {
-      if (!fs.existsSync((this.resolveOutput(pageName + '.js')))) {
+      if (!fs.existsSync((this.resolveOutput(pageName + '.cmd.js')))) {
         pageName = '_404'
         if (this.assetsMap['_404']) {
           page = require(this.resolveOutput('./', this.assetsMap['_404'].js))
         } else {
           page = {
-            default: noCacheRequire('./components/_404')
+            default: require('./components/_404.cmd')
           }
         }
       } else {
@@ -215,6 +215,7 @@ class Serlina {
       const pageChunk = this.chunks.find(chunk => chunk.id === pageName)
 
       let files = [] as string[]
+
 
       if (pageChunk) {
         files = pageChunk.files

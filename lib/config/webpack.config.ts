@@ -84,7 +84,6 @@ export default (options: MakeWebpackConfigOptions) => {
     },
     plugins: [
       ...plugins,
-      new WFP(),
       new MiniCssExtractPlugin({
         filename: '[name].css'
       }),
@@ -94,15 +93,16 @@ export default (options: MakeWebpackConfigOptions) => {
       .pushIf(!dev, new WebpackBar())
   }, customConfig)
 
-  return [merge.smart({
+  const clientSide = merge.smart({
     entry: {
      ...pages,
       '_SERLINA_MAIN': path.resolve(__dirname, '../client/render')
     },
     externals: {
-      react: 'react',
-      'react-dom': 'react-dom'
+      react: 'React',
+      'react-dom': 'ReactDOM'
     },
+    target: 'web',
     output: {
       filename: dev ? '[name].js' : '[name]-[chunkhash].js',
       path: outputPath,
@@ -111,9 +111,24 @@ export default (options: MakeWebpackConfigOptions) => {
       globalObject: 'this',
       libraryTarget: 'umd'
     },
-  }, common),
+  }, common)
 
-  merge.smart({
+  const serverSide = merge.smart({
+    entry: pages,
+    target: 'node',
+    externals: /^[a-z\-0-9]+$/,
+    output: {
+      filename: '[name].cmd.js',
+      path: outputPath,
+      publicPath,
+      libraryTarget: 'commonjs2'
+    },
+    plugins: [
+      new WFP()
+    ]
+  }, common)
+
+  const vendors = merge.smart({
     entry: {
       '_SERLINA_VENDOR': [
         'babel-polyfill',
@@ -126,5 +141,10 @@ export default (options: MakeWebpackConfigOptions) => {
       publicPath,
     }
   }, common)
+
+  return [
+    serverSide,
+    clientSide,
+    vendors
   ]
 }
