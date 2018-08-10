@@ -20,7 +20,10 @@ exports.builder = {
 
 exports.handler = argv => {
 
-  const app = new Serlina(argv)
+  const app = new Serlina({
+    dev: false,
+    ...argv
+  })
 
   const compiler = app.build()
   compiler.run()
