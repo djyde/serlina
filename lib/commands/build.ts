@@ -1,8 +1,4 @@
-import * as path from 'path'
-import * as webpack from 'webpack'
-import makeWebpackConfig from '../config/webpack.config'
 import Serlina from '../serlina'
-import * as rimraf from 'rimraf'
 
 exports.command = 'build <baseDir>'
 
