@@ -63,16 +63,16 @@ class Serlina {
     return pages
   }
 
-  _makeWebpackConfig = (options: SerlinaInstanceOptions, plugins = [] as any[]) => {
+  _makeWebpackConfig = (plugins = [] as any[]) => {
     return makeWebpackConfig({
-      ...options,
+      ...this.options,
       plugins,
       pages: this._pageEntries,
-      customConfig: options.serlinaConfig.webpack ? options.serlinaConfig.webpack(webpack, {
+      customConfig: this.options.serlinaConfig.webpack ? this.options.serlinaConfig.webpack(webpack, {
         miniCSSLoader: MiniCssExtractPlugin.loader,
-        dev: options.dev,
+        dev: this.options.dev,
         merge: merge.smart,
-        baseDir: options.baseDir
+        baseDir: this.options.baseDir
       }) : {}
     })
   }
@@ -122,7 +122,7 @@ class Serlina {
   }
 
   build() {
-    const webpackConfig = this._makeWebpackConfig(this.options)
+    const webpackConfig = this._makeWebpackConfig()
     rimraf.sync(this.options.outputPath)
     return webpack(webpackConfig)
   }
@@ -143,7 +143,7 @@ class Serlina {
       }
     }
 
-    const webpackConfig = this._makeWebpackConfig(this.options, [this._serlinaWebpackPlugin])
+    const webpackConfig = this._makeWebpackConfig([this._serlinaWebpackPlugin])
 
     if (this.options.dev === true && this.options.__testing !== true) {
       const devServerOptions = {
