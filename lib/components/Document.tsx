@@ -25,7 +25,7 @@ export default ({
   
   const main = scripts.pop()
   const vendors = scripts.pop()
-  const page = scripts
+  const otherScripts = scripts
 
   return (
     <html {...helmet.htmlAttributes.toComponent()}>
@@ -47,7 +47,9 @@ export default ({
       </head>
       <body {...helmet.bodyAttributes.toComponent()}>
         <div id="app" dangerouslySetInnerHTML={{ __html: body }} />
-        { <script src={publicPath + page}></script> }
+        {otherScripts.map(script => {
+          return <script key={script} src={publicPath + script}></script>
+        })}
         { <script src={publicPath + main}></script>}
       </body>
     </html>
