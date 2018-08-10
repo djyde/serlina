@@ -16,6 +16,7 @@ import { Helmet } from 'react-helmet'
 global.Helmet = Helmet
 
 import Head from './components/Head'
+import EventBus from './utils/eventbus';
 
 const DEV_SERVER_HOST = '127.0.0.1'
 const DEV_SERVER_PORT = 3000
@@ -48,6 +49,8 @@ class Serlina {
   private _injectedPayload = {}
   private chunks;
   private assetsMap
+
+  private __eventBus = new EventBus()
 
   get _pageEntries() {
     const pagesPath = path.resolve(this.options.baseDir, './page')
@@ -109,6 +112,8 @@ class Serlina {
   _serlinaWebpackPlugin = {
     apply: (compiler) => {
       compiler.hooks.done.tap('serlina', (stats) => {
+        this.__eventBus.emit('compiled')
+
         const statsJson = stats.toJson({
         })
 
@@ -155,7 +160,9 @@ class Serlina {
       const devServer = new WDS(compiler, devServerOptions)
 
       return new Promise((res) => {
-        devServer.listen(DEV_SERVER_PORT, DEV_SERVER_HOST, res)
+        devServer.listen(DEV_SERVER_PORT, DEV_SERVER_HOST, () => {
+          this.__eventBus.on('compiled', res)
+        })
       })
     }
 
