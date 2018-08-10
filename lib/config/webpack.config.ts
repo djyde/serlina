@@ -72,7 +72,7 @@ export default (options: MakeWebpackConfigOptions) => {
     plugins: [
       ...plugins,
       new MiniCssExtractPlugin({
-        filename: '[name].css'
+        filename: dev ? '[name].css' : '[name]-[chunkhash].css'
       }),
       new FriendlyErrorsWebpackPlugin()
     ]
