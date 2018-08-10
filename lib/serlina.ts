@@ -238,7 +238,7 @@ class Serlina {
         this.assetsMap['_SERLINA_VENDOR'].js,
         this.assetsMap['_SERLINA_MAIN'].js
       ]
-      pageStyles = [].pushIf(this.assetsMap[pageName].css, this.assetsMap[pageName])
+      pageStyles = [].pushIf(this.assetsMap[pageName].css, this.assetsMap[pageName].css)
     }
 
     const body = ReactDOMServer.renderToString(React.createElement(page.default, initialProps))
