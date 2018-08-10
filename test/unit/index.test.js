@@ -110,14 +110,6 @@ describe('Serlina', () => {
       })
     }, 20000)
 
-    test('snapshot', async () => {
-      const rendered = await app.render(PAGE1)
-      expect(rendered.string).toMatchSnapshot()
-      const rendered2 = await app.render(PAGE2)
-      expect(rendered2.string).toMatchSnapshot()
-    })
-
-
     test('page assets', async () => {
       const rendered = await app.render(PAGE1)
       expect(rendered.__pageScripts).toEqual([
