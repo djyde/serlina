@@ -108,7 +108,7 @@ describe('Serlina', () => {
           }
         })
       })
-    })
+    }, 20000)
 
     test('snapshot', async () => {
       const rendered = await app.render(PAGE1)
