@@ -41,6 +41,10 @@ Inject a payload which will be used by the page in `static getInitialProps()`.
 
 `serlina.render(pageName: string, payload?: any): Promise<Rendered>`
 
+### build
+
+Run `serlina build` manually. Return a Webpack [compiler instance](https://webpack.js.org/api/node/#compiler-instance).
+
 Render a page. 
 
 - `pageName` can start with `/` or not.
@@ -60,14 +64,19 @@ Render a page.
 
 Path to your Serlina app. Relative to `process.cwd()`.
 
-#### `--outputPath`
+#### others ARGv
 
-The output path of Serlina built files. It's relative to `process.cwd()`. 
+All ARGv will pass to Serlina as options. For example:
 
-`path.resolve(baseDir, '.serlina')` is by default.
+```
+serlina build ./client --publicPath /public/
+```
 
-#### `--publicPath`
+is the same as:
 
-default: `/`
-
-Webpack's publicPath.
+```js
+new Serlina({
+  baseDir: path.resolve(process.cwd(), './client'),
+  publicPath: '/public/'
+})
+```

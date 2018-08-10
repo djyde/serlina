@@ -76,13 +76,13 @@ export default (options: MakeWebpackConfigOptions) => {
       }),
       new FriendlyErrorsWebpackPlugin()
     ]
-      .pushIf(!dev, assetsWebpackPlugin)
       .pushIf(!dev, new WebpackBar())
+      .pushIf(!dev, assetsWebpackPlugin)
   }, customConfig)
 
   const clientSide = merge.smart({
     entry: {
-     ...pages,
+      ...pages,
       '_SERLINA_MAIN': path.resolve(__dirname, '../client/render')
     },
     externals: {
@@ -126,7 +126,7 @@ export default (options: MakeWebpackConfigOptions) => {
       filename: dev ? '[name].js' : '[name]-[chunkhash].js',
       path: outputPath,
       publicPath,
-    }
+    },
   }, common)
 
   return [

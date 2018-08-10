@@ -19,31 +19,9 @@ exports.builder = {
 }
 
 exports.handler = argv => {
-  const {
-    baseDir,
-    outputPath,
-    publicPath
-  } = argv
 
-  const cwdResolve = p => {
-    if (p) {
-      return path.resolve(process.cwd(), p)
-    } else {
-      return p
-    }
-  }
+  const app = new Serlina(argv)
 
-  const options = Serlina._makeDefualtOptions({
-    baseDir: cwdResolve(baseDir),
-    outputPath: cwdResolve(outputPath),
-    publicPath: publicPath,
-    dev: false,
-  })
-
-  const webpackConfig = Serlina._makeWebpackConfig(options)
-
-  rimraf.sync(options.outputPath)
-
-  const compiler = webpack(webpackConfig)
+  const compiler = app.build()
   compiler.run()
 }

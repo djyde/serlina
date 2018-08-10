@@ -9,6 +9,7 @@ const WDS = require('webpack-dev-server')
 import Document from './components/Document'
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const merge = require('webpack-merge')
+const rimraf = require('rimraf')
 
 import { Helmet } from 'react-helmet'
 // @ts-ignore
@@ -48,8 +49,35 @@ class Serlina {
   private chunks;
   private assetsMap
 
-  static _makeDefualtOptions = (options: SerlinaOptions): SerlinaInstanceOptions => {
+  get _pageEntries() {
+    const pagesPath = path.resolve(this.options.baseDir, './page')
+    const pageFileNames = fs.readdirSync(pagesPath)
+    const pages = {}
 
+    pageFileNames.forEach(filename => {
+      // remove the extensions
+      const pageName = filename.split('.').slice(0, -1).join('.')
+      pages[pageName] = [path.resolve(this.options.baseDir, './page', filename)]
+    })
+
+    return pages
+  }
+
+  _makeWebpackConfig = (options: SerlinaInstanceOptions, plugins = [] as any[]) => {
+    return makeWebpackConfig({
+      ...options,
+      plugins,
+      pages: this._pageEntries,
+      customConfig: options.serlinaConfig.webpack ? options.serlinaConfig.webpack(webpack, {
+        miniCSSLoader: MiniCssExtractPlugin.loader,
+        dev: options.dev,
+        merge: merge.smart,
+        baseDir: options.baseDir
+      }) : {}
+    })
+  }
+
+  constructor(options: SerlinaOptions) {
     let {
       baseDir = '',
       // @ts-ignore
@@ -65,7 +93,7 @@ class Serlina {
       publicPath = 'http://' + DEV_SERVER_HOST + ':' + DEV_SERVER_PORT + '/'
     }
 
-    return {
+    this.options = {
       __testing,
       serlinaConfig: fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {},
       baseDir,
@@ -74,42 +102,11 @@ class Serlina {
       publicPath,
       forceBuild,
     }
-  }
 
-  static _getPageEntries = (options: SerlinaOptions): { [x: string]: string } => {
-    const pagesPath = path.resolve(options.baseDir, './page')
-    const pageFileNames = fs.readdirSync(pagesPath)
-    const pages = {}
-
-    pageFileNames.forEach(filename => {
-      // remove the extensions
-      const pageName = filename.split('.').slice(0, -1).join('.')
-      pages[pageName] = [path.resolve(options.baseDir, './page', filename)]
-    })
-
-    return pages
-  }
-
-  static _makeWebpackConfig = (options: SerlinaInstanceOptions, plugins = [] as any[]) => {
-    return makeWebpackConfig({
-      ...options,
-      plugins,
-      pages: Serlina._getPageEntries(options),
-      customConfig: options.serlinaConfig.webpack ? options.serlinaConfig.webpack(webpack, {
-        miniCSSLoader: MiniCssExtractPlugin.loader,
-        dev: options.dev,
-        merge: merge.smart,
-        baseDir: options.baseDir
-      }) : {}
-    })
-  }
-
-  constructor(options: SerlinaOptions) {
-    this.options = Serlina._makeDefualtOptions(options)
     this.resolveOutput = (...args) => path.resolve.call(null, this.options.outputPath, ...args)
   }
 
-  serlinaWebpackPlugin = {
+  _serlinaWebpackPlugin = {
     apply: (compiler) => {
       compiler.hooks.done.tap('serlina', (stats) => {
         const statsJson = stats.toJson({
@@ -122,6 +119,12 @@ class Serlina {
         }
       })
     }
+  }
+
+  build() {
+    const webpackConfig = this._makeWebpackConfig(this.options)
+    rimraf.sync(this.options.outputPath)
+    return webpack(webpackConfig)
   }
 
   prepare() {
@@ -140,7 +143,7 @@ class Serlina {
       }
     }
 
-    const webpackConfig = Serlina._makeWebpackConfig(this.options, [this.serlinaWebpackPlugin])
+    const webpackConfig = this._makeWebpackConfig(this.options, [this._serlinaWebpackPlugin])
 
     if (this.options.dev === true && this.options.__testing !== true) {
       const devServerOptions = {
@@ -193,11 +196,11 @@ class Serlina {
     } else {
       if (!fs.existsSync((this.resolveOutput(pageName + '.cmd.js')))) {
         pageName = '_404'
-        if (!fs.existsSync(this.resolveOutput('./404.cmd.js'))) {
+        if (fs.existsSync(this.resolveOutput('./404.cmd.js'))) {
           page = require(this.resolveOutput('./404.cmd.js'))
         } else {
           page = {
-            default: require('./components/_404.cmd')
+            default: require('./components/_404')
           }
         }
       } else {
@@ -234,11 +237,11 @@ class Serlina {
 
     } else {
       pageScripts = [
-        this.assetsMap[pageName].js,
+        this.assetsMap[pageName] && this.assetsMap[pageName].js,
         this.assetsMap['_SERLINA_VENDOR'].js,
         this.assetsMap['_SERLINA_MAIN'].js
-      ]
-      pageStyles = [].pushIf(this.assetsMap[pageName].css, this.assetsMap[pageName].css)
+      ].filter(_ => _)
+      pageStyles = this.assetsMap[pageName] && this.assetsMap[pageName].css ? [this.assetsMap[pageName].css] : []
     }
 
     const body = ReactDOMServer.renderToString(React.createElement(page.default, initialProps))

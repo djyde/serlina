@@ -12,7 +12,8 @@
     "bin"
   ],
   "jest": {
-    "testURL": "http://localhost/"
+    "testURL": "http://localhost/",
+    "testEnvironment": "node"
   },
   "scripts": {
     "start": "tsc --watch",
