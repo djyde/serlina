@@ -26,9 +26,9 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: 
-        - yarn install
-        - npm run bootstrap -- --npmClient yarn
+      - run: yarn install
+
+      - run: npm run bootstrap -- --npmClient yarn
 
       - save_cache:
           paths:
