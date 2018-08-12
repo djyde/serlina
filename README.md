@@ -81,15 +81,7 @@ Visit [Full Doc](https://serlina.js.org)
 ```bash
 npm run bootstrap
 
-npm start # start compiling in watch mode
-
-npm build # compile 
-
 npm test # run test
-
-npm run demo # run a sample server
-
-npm run doc # run the doc
 ```
 
 # License

@@ -1,4 +1,5 @@
 {
+  "name": "css-in-js-sample",
   "scripts": {
     "start": "node index.js"
   },

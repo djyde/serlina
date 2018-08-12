@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "docute ."
+  },
+  "devDependencies": {
+    "docute": "^3.4.12"
+  }
+}

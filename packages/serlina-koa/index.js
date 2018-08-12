@@ -9,6 +9,8 @@ const handler = (options = {}) => {
 
     assert(serlina, 'Serlina instance is required!')
 
+    console.log(serlina.options)
+
     if (map && map[ctx.path]) {
       const rendered = await serlina.render(map[ctx.path])
       ctx.body = rendered.string

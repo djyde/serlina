@@ -1,4 +1,5 @@
 {
+  "name": "sample",
   "scripts": {
     "test": "node index",
     "build": "node ../../bin/serlina build . --publicPath http://localhost:1024/"

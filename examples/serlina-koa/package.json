@@ -1,0 +1,12 @@
+{
+  "name": "serlina-koa-example",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "react": "^16",
+    "react-dom": "^16",
+    "serlina": "^0.1",
+    "serlina-koa": "^0.1"
+  }
+}
