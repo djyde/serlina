@@ -16,6 +16,7 @@ I love using [Next.js](https://github.com/zeit/next.js/), but most of my project
 ## Integrations
 
 - Egg: [egg-serlina](https://github.com/serlina-community/egg-serlina)
+- Koa: [serlina-koa](/packages/serlina-koa/README.md)
 
 ## Quick Start
 
