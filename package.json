@@ -18,9 +18,10 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
+    "bootstrap": "lerna bootstrap",
     "doc": "docute ./docs",
     "clean": "rimraf dist",
-    "demo": "node ./test/sample",
+    "demo": "node ./examples/sample",
     "test": "npm run build && jest",
     "prepublish": "npm run clean && npm run build"
   },
@@ -53,6 +54,7 @@
     "@types/react-dom": "^16.0.6",
     "docute": "^3.4.12",
     "jest": "^23.4.2",
+    "lerna": "^3.0.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "typescript": "^3.0.1"

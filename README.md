@@ -78,15 +78,15 @@ Visit [Full Doc](https://serlina.js.org)
 ## Development
 
 ```bash
-npm i
-
-cd test/sample && npm i
+npm run bootstrap
 
 npm start # start compiling in watch mode
 
 npm build # compile 
 
-npm test # run a sample web server
+npm test # run test
+
+npm run demo # run a sample server
 
 npm run doc # run the doc
 ```
