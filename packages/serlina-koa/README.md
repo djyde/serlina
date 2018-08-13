@@ -2,6 +2,7 @@
 
 [![npm](https://badgen.net/npm/v/serlina-koa)](https://npm.im/serlina-koa)
 [![downloads](https://badgen.net/npm/dm/serlina-koa)](https://npm.im/serlina-koa)
+[![CircleCI](https://circleci.com/gh/djyde/serlina.svg?style=shield)](https://circleci.com/gh/djyde/serlina)
 
 🚨 [WIP]
 
