@@ -20,7 +20,18 @@
     "react": "^16",
     "react-dom": "^16"
   },
-  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djyde/serlina.git"
+  },
+  "keywords": [
+    "react",
+    "serverside-rendering"
+  ],
+  "bugs": {
+    "url": "https://github.com/djyde/serlina/issues"
+  },
+  "homepage": "https://serlina.js.org",
   "author": "Randy",
   "license": "MIT"
 }
