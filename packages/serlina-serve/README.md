@@ -4,7 +4,7 @@
 [![downloads](https://badgen.net/npm/dm/serlina-serve)](https://npm.im/serlina-serve)
 [![CircleCI](https://circleci.com/gh/djyde/serlina.svg?style=shield)](https://circleci.com/gh/djyde/serlina)
 
-[🚨 WIP] A simple Serlina web server
+[🚨 WIP] A simple Serlina web server based on [serlina-koa](../serlina-koa)
 
 ## Usage
 

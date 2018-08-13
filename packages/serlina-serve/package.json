@@ -1,6 +1,7 @@
 {
   "name": "serlina-serve",
   "version": "0.1.0",
+  "description": "A simple Serlina web server",
   "scripts": {
     "test": "jest"
   },
@@ -18,5 +19,8 @@
   "peerDependencies": {
     "react": "^16",
     "react-dom": "^16"
-  }
+  },
+  "main": "index.js",
+  "author": "Randy",
+  "license": "MIT"
 }
