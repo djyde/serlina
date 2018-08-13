@@ -1,11 +1,14 @@
 {
   "name": "css-in-js-sample",
   "scripts": {
-    "start": "node index.js"
+    "start": "serlina-serve dev"
   },
   "dependencies": {
     "emotion": "^9.2.6",
     "react": "^16.4.2",
     "react-dom": "^16.4.2"
+  },
+  "devDependencies": {
+    "serlina-serve": "^0.1.0"
   }
 }

@@ -21,11 +21,13 @@ exports.handler = argv => {
   } = argv
 
   const serve = new Serve({
-    baseDir,
+    baseDir: path.resolve(process.cwd(), baseDir),
     publicPath: '/public/'
   })
 
-  serve.app.listen(port, () => {
-    console.log('Running at http://localhost:' + port)
+  serve.serlina.prepare().then(() => {
+    serve.app.listen(port, () => {
+      console.log('Running at http://localhost:' + port)
+    })
   })
 }

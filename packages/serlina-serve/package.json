@@ -1,9 +1,12 @@
 {
   "name": "serlina-serve",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple Serlina web server",
   "scripts": {
     "test": "jest"
+  },
+  "bin": {
+    "serlina-serve": "./bin/serlina-serve"
   },
   "dependencies": {
     "koa": "^2",
