@@ -1,0 +1,15 @@
+{
+  "name": "serlina-serve",
+  "version": "0.1.0",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "koa": "^2",
+    "serlina": "^0.1",
+    "react": "^16",
+    "react-dom": "^16",
+    "serlina-koa": "^0.1",
+    "supertest": "^3"
+  }
+}

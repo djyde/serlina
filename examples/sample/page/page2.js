@@ -1,6 +1,10 @@
 import React from 'react'
 import '../style/index.less'
-import Head from '../../../head'
+import Head from 'serlina/head'
+
+import {
+  Button
+} from 'antd'
 
 export default class Page2 extends React.Component {
 
@@ -17,7 +21,7 @@ export default class Page2 extends React.Component {
           <title>Page2</title>
           <meta charSet="utf8" />
         </Head>
-        <button onClick={e => alert('works')}>test</button>
+        <Button onClick={e => alert('works')}>test</Button>
         {this.props.foo}
       </div>
     )

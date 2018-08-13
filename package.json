@@ -7,7 +7,8 @@
   "devDependencies": {
     "docute": "^3.4.12",
     "jest": "^23.5.0",
-    "lerna": "^3.0.3"
+    "lerna": "^3.0.3",
+    "power-assert": "^1.6.0"
   },
   "jest": {
     "testURL": "http://localhost/",

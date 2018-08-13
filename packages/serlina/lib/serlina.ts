@@ -60,7 +60,7 @@ class Serlina {
     pageFileNames.forEach(filename => {
       // remove the extensions
       const pageName = filename.split('.').slice(0, -1).join('.')
-      pages[pageName] = [path.resolve(this.options.baseDir, './page', filename)]
+      pages[pageName] = './page/' + filename
     })
 
     return pages
@@ -75,6 +75,7 @@ class Serlina {
         miniCSSLoader: MiniCssExtractPlugin.loader,
         dev: this.options.dev,
         merge: merge.smart,
+        __testing: this.options.__testing,
         baseDir: this.options.baseDir
       }) : {}
     })

@@ -15,11 +15,11 @@ export interface MakeWebpackConfigOptions extends SerlinaInstanceOptions {
   publicPath: string,
   plugins: any[],
   dev: boolean,
+  __testing?: boolean,
   pages: { [pageName: string]: string }
 }
 
 export default (options: MakeWebpackConfigOptions) => {
-
 
   const {
     customConfig = {},
@@ -28,7 +28,8 @@ export default (options: MakeWebpackConfigOptions) => {
     publicPath,
     dev,
     plugins,
-    pages = {}
+    pages = {},
+    __testing
   } = options
 
   const assetsWebpackPlugin = new AssetsWebpackPlugin({
@@ -38,11 +39,14 @@ export default (options: MakeWebpackConfigOptions) => {
   })
 
   const common = merge.smart({
-    context: baseDir,
     mode: dev ? 'development' : 'production',
+    context: baseDir,
+    resolve: {
+      symlinks: false
+    },
     resolveLoader: {
       modules: [
-        path.resolve(__dirname, '../node_modules'),
+        path.resolve(__dirname, '../../node_modules'),
         'node_modules',
       ]
     },
@@ -54,8 +58,8 @@ export default (options: MakeWebpackConfigOptions) => {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['env', 'react'],
-              plugins: ['transform-regenerator']
+              presets: [require.resolve('babel-preset-env'), require.resolve('babel-preset-react')],
+              plugins: [require.resolve('babel-plugin-transform-regenerator')]
             }
           }
         },
@@ -74,8 +78,8 @@ export default (options: MakeWebpackConfigOptions) => {
       new MiniCssExtractPlugin({
         filename: dev ? '[name].css' : '[name]-[chunkhash].css'
       }),
-      new FriendlyErrorsWebpackPlugin()
     ]
+      .pushIf(!__testing, new FriendlyErrorsWebpackPlugin())
       .pushIf(!dev, new WebpackBar())
       .pushIf(!dev, assetsWebpackPlugin)
   }, customConfig)
@@ -118,7 +122,7 @@ export default (options: MakeWebpackConfigOptions) => {
   const vendors = merge.smart({
     entry: {
       '_SERLINA_VENDOR': [
-        'babel-polyfill',
+        require.resolve('babel-polyfill'),
         path.resolve(__dirname, '../client/common')
       ]
     },
