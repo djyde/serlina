@@ -200,7 +200,6 @@ The configuration you return will merged to the default configuration using [`we
 - `baseDir` **string** Serlina application baseDir
 - `merge` The [merge.smart](https://github.com/survivejs/webpack-merge#mergesmartconfiguration-configuration) function.
 
-
 ### Custom Babel config
 
 All you need to do is adding a `.babelrc` in `baseDir`.
