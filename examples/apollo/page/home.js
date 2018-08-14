@@ -10,7 +10,7 @@ import * as fetch from 'isomorphic-fetch'
 
 const client = (initialState = {}) => {
   return new ApolloClient({
-    ssrMode: false,
+    ssrMode: true,
     cache: new InMemoryCache().restore(initialState),
     link: createHttpLink({
       uri: 'https://w5v4jr97kz.lp.gql.zone/graphql',
