@@ -1,0 +1,22 @@
+{
+  "name": "serlina-apollo",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "tsc --watch"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+  },
+  "peerDependencies": {
+
+  },
+  "devDependencies": {
+    "react-dom": "^16.4.2",
+    "apollo-client": "^2.3.8",
+    "react-apollo": "^2.1.11",
+    "typescript": "^3",
+    "graphql": "^0.13.2",
+    "react": "^16.4.2",
+    "@types/react": "^16"
+  }
+}
