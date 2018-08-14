@@ -30,7 +30,7 @@
     "babel-loader": "^7.1.5",
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^1.0.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
