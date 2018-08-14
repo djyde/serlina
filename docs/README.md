@@ -189,6 +189,8 @@ module.exports = {
 }
 ```
 
+> Serlina has built in `css-loader`
+
 The configuration you return will merged to the default configuration using [`wepback-merge`](https://github.com/survivejs/webpack-merge#mergesmartconfiguration-configuration)
 
 #### options
@@ -203,6 +205,10 @@ The configuration you return will merged to the default configuration using [`we
 ### Custom Babel config
 
 All you need to do is adding a `.babelrc` in `baseDir`.
+
+Serlina comes with these Babel config:
+
+- presets: ['es2017', 'react']
 
 ### Custom 404 page
 
