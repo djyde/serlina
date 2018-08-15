@@ -1,0 +1,20 @@
+{
+  "name": "serlina-react-router",
+  "version": "0.1.0",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "tsc --watch",
+    "build": "tsc"
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "react-router-dom": "^4"
+  },
+  "devDependencies": {
+    "@types/react": "^16.4.10",
+    "react-router-dom": "^4.3.1",
+    "react": "^16.4.2",
+    "typescript": "^3.0.1"
+  }
+}

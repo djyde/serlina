@@ -1,0 +1,25 @@
+{
+  "name": "react-router-sample",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "serlina-react-router": "^0.1.0",
+    "react-router-dom": "^4.3.1",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
+  },
+  "devDependencies": {
+    "serlina": "^0.1.12",
+    "koa": "^2.5.2",
+    "koa-router": "^7.4.0",
+    "graphql": "^0.13.2",
+    "serlina-apollo": "^0.1",
+    "apollo-cache-inmemory": "^1.2.7",
+    "react-apollo": "^2.1.11",
+    "apollo-client": "^2.3.8",
+    "graphql-tag": "^2.9.2",
+    "apollo-link-http": "^1.5.4",
+    "isomorphic-fetch": "^2.2.1"
+  }
+}

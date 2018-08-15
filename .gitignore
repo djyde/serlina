@@ -5,3 +5,4 @@ test/sample/public
 package-lock.json
 .serlina
 dist
+packages/serlina-react-router/lib

@@ -1,17 +1,32 @@
 const assert = require('assert')
+const pathToReg = require('path-to-regexp')
 
 const handler = (options = {}) => {
   return async ctx => {
     const {
       serlina,
-      map
+      map,
+      payload
     } = options
 
     assert(serlina, 'Serlina instance is required!')
 
-    if (map && map[ctx.path]) {
-      const rendered = await serlina.render(map[ctx.path])
-      ctx.body = rendered.string
+    const injected = Object.assign({}, { ctx }, payload || {})
+
+    let renderedPath;
+
+    if (map) {
+      Object.keys(map).forEach(path => {
+        const re = pathToReg(path)
+        if (ctx.path.match(re)) {
+          renderedPath = path
+        }
+      })
+
+      if (renderedPath) {
+        const rendered = await serlina.render(renderedPath, injected)
+        ctx.body = rendered.string
+      }
     }
   }
 }

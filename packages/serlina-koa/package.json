@@ -4,6 +4,9 @@
   "scripts": {
     "start": "node example"
   },
+  "dependencies": {
+    "path-to-regexp": "^2.2.1"
+  },
   "peerDependencies": {
     "serlina": "^0.1"
   }
