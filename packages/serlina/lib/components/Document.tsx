@@ -1,5 +1,5 @@
 import * as React from 'react'
-
+import * as serialize from 'serialize-javascript'
 export interface DocumentProps {
   pageStyles: string[],
   pageScripts: string[],
@@ -40,7 +40,7 @@ export default ({
         <script dangerouslySetInnerHTML={{
           __html: `
         window.__serlina__DATA = {};
-        window.__serlina__DATA.pageInitialProps = ${JSON.stringify(initialProps)};
+        window.__serlina__DATA.pageInitialProps = ${serialize(initialProps)};
       `
         }}>
         </script>
