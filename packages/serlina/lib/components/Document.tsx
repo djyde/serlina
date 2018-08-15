@@ -32,6 +32,9 @@ export default ({
       <head>
         {helmet.title.toComponent()}
         {helmet.meta.toComponent()}
+        {helmet.script.toComponent()}
+        {helmet.noscript.toComponent()}
+        {helmet.style.toComponent()}
         {helmet.link.toComponent()}
         {pageStyles.map(url => {
           return <link key={url} rel='stylesheet' href={publicPath + url} />
