@@ -290,8 +290,8 @@ const app = new Serlina({
 
 ### How to use with GraphQL?
 
-Use [serlina-apollo](../packages/serlina-apollo/README.md)
+Use [serlina-apollo](https://github.com/djyde/serlina/blob/master/packages/serlina-apollo/README.md)
 
 ### How to use with React Router?
 
-Use [serlina-react-router](../packages/serlina-react-router/README.md)
+Use [serlina-react-router](https://github.com/djyde/serlina/blob/master/packages/serlina-react-router/README.md)
