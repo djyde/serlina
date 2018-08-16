@@ -41,9 +41,6 @@ export default (options: MakeWebpackConfigOptions) => {
   const common = merge.smart({
     mode: dev ? 'development' : 'production',
     context: baseDir,
-    resolve: {
-      symlinks: false
-    },
     resolveLoader: {
       modules: [
         path.resolve(__dirname, '../../node_modules'),
