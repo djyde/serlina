@@ -288,3 +288,10 @@ const app = new Serlina({
 
 `process.browser` return a `boolean`
 
+### How to use with GraphQL?
+
+Use [serlina-apollo](../packages/serlina-apollo/README.md)
+
+### How to use with React Router?
+
+Use [serlina-react-router](../packages/serlina-react-router/README.md)

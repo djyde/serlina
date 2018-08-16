@@ -1,6 +1,9 @@
 import * as React from 'react'
 import { withRouter } from 'serlina-react-router'
+import { withApollo } from 'serlina-apollo'
 import { Route, Switch } from 'react-router-dom'
+
+import client from '../apolloClient'
 
 import About from '../views/Home/about'
 import Index from '../views/Home/index'
@@ -21,9 +24,9 @@ class Home extends React.Component {
   }
 }
 
-export default withRouter(Home, {
+export default withApollo(withRouter(Home, {
   getUrl({ ctx }) {
     return ctx.url
   },
   basename: '/home'
-})
+}), client)
