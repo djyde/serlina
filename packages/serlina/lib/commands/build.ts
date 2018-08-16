@@ -1,4 +1,5 @@
 import Serlina from '../serlina'
+import * as path from 'path'
 
 exports.command = 'build <baseDir>'
 
@@ -17,8 +18,9 @@ exports.builder = {
 exports.handler = argv => {
 
   const app = new Serlina({
+    ...argv,
     dev: false,
-    ...argv
+    baseDir: path.resolve(process.cwd(), argv.baseDir)
   })
 
   const compiler = app.build()
