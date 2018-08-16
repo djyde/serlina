@@ -7,6 +7,7 @@ const merge = require('webpack-merge')
 const AssetsWebpackPlugin = require('assets-webpack-plugin')
 const WebpackBar = require('webpackbar')
 const WFP = require('write-file-webpack-plugin')
+const nodeExternals = require('webpack-node-externals')
 
 export interface MakeWebpackConfigOptions extends SerlinaInstanceOptions {
   customConfig?: object,
@@ -106,7 +107,7 @@ export default (options: MakeWebpackConfigOptions) => {
   const serverSide = merge.smart({
     entry: pages,
     target: 'node',
-    externals: /^[a-z\-0-9]+$/,
+    externals: [nodeExternals()],
     output: {
       filename: '[name].cmd.js',
       path: outputPath,
