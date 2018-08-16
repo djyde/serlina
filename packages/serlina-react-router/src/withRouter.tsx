@@ -31,7 +31,7 @@ export default (WrappedComponent, options: options) => {
       if (process.browser) {
         return (
           <BrowserRouter basename={options.basename}>
-            <WrappedComponent {...this.props.wrappedComonentProps} />
+            <WrappedComponent {...this.props.wrappedComponentProps} />
           </BrowserRouter>
         )
       } else {
