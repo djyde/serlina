@@ -41,7 +41,7 @@ export default (WrappedComponent, options: options) => {
             context={this.props.context}
             location={this.props.url}
           >
-            <WrappedComponent {...this.props} />
+            <WrappedComponent {...this.props.wrappedComponentProps} />
           </StaticRouter>
         )
       }
