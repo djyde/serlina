@@ -103,6 +103,9 @@ export default (options: MakeWebpackConfigOptions) => {
     },
   }, common)
 
+  const serverSideCommon = {...common}
+  // don't use custom externals in server side code
+  delete serverSideCommon['externals']
   const serverSide = merge.smart({
     entry: pages,
     target: 'node',
@@ -116,7 +119,7 @@ export default (options: MakeWebpackConfigOptions) => {
     plugins: [
       new WFP()
     ]
-  }, common)
+  }, serverSideCommon)
 
   const vendors = merge.smart({
     entry: {
