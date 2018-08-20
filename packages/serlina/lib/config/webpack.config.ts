@@ -103,12 +103,13 @@ export default (options: MakeWebpackConfigOptions) => {
 
   const serverSideCommon = {...common}
   // don't use custom externals in server side code
+  const whitelist = [/\.(?!(?:jsx?|json)$).{1,5}$/i]
   delete serverSideCommon['externals']
   const serverSide = merge.smart({
     entry: pages,
     target: 'node',
     externals: [nodeExternals({
-      whitelist: customConfig.nodeExternalsWhitelist ? customConfig.nodeExternalsWhitelist : []
+      whitelist: customConfig.nodeExternalsWhitelist ? whitelist.concat(customConfig.nodeExternalsWhitelist) : whitelist
     })],
     output: {
       filename: '[name].cmd.js',
