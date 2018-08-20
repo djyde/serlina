@@ -27,6 +27,7 @@ export default (options: MakeWebpackConfigOptions) => {
     baseDir,
     outputPath,
     publicPath,
+    serlinaConfig,
     dev,
     plugins,
     pages = {},
@@ -109,7 +110,7 @@ export default (options: MakeWebpackConfigOptions) => {
     entry: pages,
     target: 'node',
     externals: [nodeExternals({
-      whitelist: customConfig.nodeExternalsWhitelist ? whitelist.concat(customConfig.nodeExternalsWhitelist) : whitelist
+      whitelist: serlinaConfig.nodeExternalsWhitelist ? whitelist.concat(serlinaConfig.nodeExternalsWhitelist) : whitelist
     })],
     output: {
       filename: '[name].cmd.js',
