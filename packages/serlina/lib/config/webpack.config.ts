@@ -10,7 +10,7 @@ const WFP = require('write-file-webpack-plugin')
 const nodeExternals = require('webpack-node-externals')
 
 export interface MakeWebpackConfigOptions extends SerlinaInstanceOptions {
-  customConfig?: object,
+  customConfig?: any,
   baseDir: string,
   outputPath: string,
   publicPath: string,
@@ -107,7 +107,9 @@ export default (options: MakeWebpackConfigOptions) => {
   const serverSide = merge.smart({
     entry: pages,
     target: 'node',
-    externals: [nodeExternals()],
+    externals: [nodeExternals({
+      whitelist: customConfig.nodeExternalsWhitelist ? customConfig.nodeExternalsWhitelist : []
+    })],
     output: {
       filename: '[name].cmd.js',
       path: outputPath,
