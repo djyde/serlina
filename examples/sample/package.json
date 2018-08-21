@@ -8,11 +8,7 @@
     "antd": "^3.7.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "serlina": "^0.1.10"
-  },
-  "devDependencies": {
-    "babel-plugin-import": "^1.8.0",
-    "less": "^3.8.0",
-    "less-loader": "^4.1.0"
+    "serlina": "^0.1.10",
+    "serlina-plugin-antd": "^0.1.2"
   }
 }
