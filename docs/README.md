@@ -208,7 +208,7 @@ All you need to do is adding a `.babelrc` in `baseDir`.
 
 Serlina comes with these Babel config:
 
-- presets: ['es2017', 'react']
+- presets: `['es2015', 'stage2', 'react']`
 
 ### Custom 404 page
 

@@ -57,7 +57,7 @@ export default (options: MakeWebpackConfigOptions) => {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: [require.resolve('babel-preset-es2017'), require.resolve('babel-preset-react')]
+              presets: [require.resolve('babel-preset-es2015'), require.resolve('babel-preset-stage-2'), require.resolve('babel-preset-react')]
             }
           }
         },
