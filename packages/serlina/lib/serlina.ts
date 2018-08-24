@@ -7,8 +7,6 @@ import * as path from 'path'
 import * as React from 'react'
 const WDS = require('webpack-dev-server')
 import Document from './components/Document'
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const merge = require('webpack-merge')
 const rimraf = require('rimraf')
 
 import { Helmet } from 'react-helmet'
@@ -71,13 +69,7 @@ class Serlina {
       ...this.options,
       plugins,
       pages: this._pageEntries,
-      customConfig: this.options.serlinaConfig.webpack ? this.options.serlinaConfig.webpack(webpack, {
-        miniCSSLoader: MiniCssExtractPlugin.loader,
-        dev: this.options.dev,
-        merge: merge.smart,
-        __testing: this.options.__testing,
-        baseDir: this.options.baseDir
-      }) : {}
+      customConfig: this.options.serlinaConfig.webpack
     })
   }
 

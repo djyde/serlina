@@ -171,19 +171,29 @@ module.exports = {
 
 ### Custom Webpack config
 
-It's easy to customize Webpack plugin. Create a `serlina.config.js`:
+It's easy to customize Webpack plugin. While Serlina will compile server side code and client side code, you can customize them independently.
+
+Create a `serlina.config.js`:
 
 ```js
 // serlina.config.js
 
 module.exports = {
-  webpack(webpack, options) {
-    return {
-      module: {
-        rules: [{
-         // ...
-        }]
+  webpack: {
+    client(webpack, options) {
+      return {
+        module: {
+          rules: [{
+          // ...
+          }]
+        }
       }
+    },
+    server(webpack, options) {
+      // ...
+    },
+    common(webpack, options) {
+      // ...
     }
   }
 }
@@ -191,7 +201,12 @@ module.exports = {
 
 > Serlina has built in `css-loader`
 
-The configuration you return will merged to the default configuration using [`wepback-merge`](https://github.com/survivejs/webpack-merge#mergesmartconfiguration-configuration)
+The configuration you return will merged to the default configuration using [`wepback-merge`](https://github.com/survivejs/webpack-merge#mergesmartconfiguration-configuration).
+
+The merge priority:
+
+- `common > server > default`
+- `common > client > default`
 
 #### options
 

@@ -1,5 +1,6 @@
 import { SerlinaInstanceOptions } from "../serlina";
 import 'push-if'
+const webpack = require('webpack')
 const path = require('path')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -40,7 +41,8 @@ export default (options: MakeWebpackConfigOptions) => {
     fullPath: false
   })
 
-  const common = merge.smart({
+  // struct webpack config
+  let defaultCommonConfig = {
     mode: dev ? 'development' : 'production',
     context: baseDir,
     resolveLoader: {
@@ -80,7 +82,29 @@ export default (options: MakeWebpackConfigOptions) => {
       .pushIf(!__testing, new FriendlyErrorsWebpackPlugin())
       .pushIf(!dev, new WebpackBar())
       .pushIf(!dev, assetsWebpackPlugin)
-  }, customConfig)
+  }
+
+  let commonConfig = {}
+  let serverConfig = {}
+  let clientConfig = {}
+  const passedOptions = {
+    miniCSSLoader: MiniCssExtractPlugin.loader,
+    dev,
+    merge: merge.smart,
+    __testing: __testing,
+    baseDir
+  }
+
+  if (typeof customConfig === 'function') {
+    // TODO: derprecated
+    console.warn('[serlina]', 'Passing function to `webpack` is deprecated. Please pass your config in separate of `common`, `client` or `server`.')
+    console.log(merge.smart(defaultCommonConfig, customConfig(webpack, passedOptions)))
+    commonConfig = clientConfig = serverConfig = merge.smart(defaultCommonConfig, customConfig(webpack, passedOptions))
+  } else {
+    commonConfig = customConfig.common ? merge.smart(defaultCommonConfig, customConfig(webpack, passedOptions)) : defaultCommonConfig
+    clientConfig = customConfig.client ? merge.smart(customConfig.client(webpack, passedOptions), commonConfig) : defaultCommonConfig
+    serverConfig = customConfig.server ? merge.smart(customConfig.server(webpack, passedOptions), commonConfig) : defaultCommonConfig
+  }
 
   const clientSide = merge.smart({
     entry: {
@@ -100,9 +124,9 @@ export default (options: MakeWebpackConfigOptions) => {
       globalObject: 'this',
       libraryTarget: 'umd'
     },
-  }, common)
+  }, clientConfig)
 
-  const serverSideCommon = {...common}
+  const serverSideCommon = {...serverConfig}
   // don't use custom externals in server side code
   const whitelist = [/\.(?!(?:jsx?|json)$).{1,5}$/i]
   delete serverSideCommon['externals']
@@ -135,7 +159,7 @@ export default (options: MakeWebpackConfigOptions) => {
       path: outputPath,
       publicPath,
     },
-  }, common)
+  }, clientConfig)
 
   return [
     serverSide,
