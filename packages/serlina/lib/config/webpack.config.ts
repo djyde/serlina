@@ -98,10 +98,9 @@ export default (options: MakeWebpackConfigOptions) => {
   if (typeof customConfig === 'function') {
     // TODO: derprecated
     console.warn('[serlina]', 'Passing function to `webpack` is deprecated. Please pass your config in separate of `common`, `client` or `server`.')
-    console.log(merge.smart(defaultCommonConfig, customConfig(webpack, passedOptions)))
     commonConfig = clientConfig = serverConfig = merge.smart(defaultCommonConfig, customConfig(webpack, passedOptions))
   } else {
-    commonConfig = customConfig.common ? merge.smart(defaultCommonConfig, customConfig(webpack, passedOptions)) : defaultCommonConfig
+    commonConfig = customConfig.common ? merge.smart(defaultCommonConfig, customConfig.common(webpack, passedOptions)) : defaultCommonConfig
     clientConfig = customConfig.client ? merge.smart(customConfig.client(webpack, passedOptions), commonConfig) : defaultCommonConfig
     serverConfig = customConfig.server ? merge.smart(customConfig.server(webpack, passedOptions), commonConfig) : defaultCommonConfig
   }
