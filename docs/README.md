@@ -171,7 +171,7 @@ module.exports = {
 
 ### Custom Webpack config
 
-It's easy to customize Webpack plugin. While Serlina will compile server side code and client side code, you can customize them independently.
+It's easy to customize Webpack plugin.
 
 Create a `serlina.config.js`:
 
@@ -179,21 +179,13 @@ Create a `serlina.config.js`:
 // serlina.config.js
 
 module.exports = {
-  webpack: {
-    client(webpack, options) {
-      return {
-        module: {
-          rules: [{
-          // ...
-          }]
-        }
+  webpack(webpack, options) {
+    return {
+      module: {
+        rules: [{
+        // ...
+        }]
       }
-    },
-    server(webpack, options) {
-      // ...
-    },
-    common(webpack, options) {
-      // ...
     }
   }
 }
@@ -203,10 +195,6 @@ module.exports = {
 
 The configuration you return will merged to the default configuration using [`wepback-merge`](https://github.com/survivejs/webpack-merge#mergesmartconfiguration-configuration).
 
-The merge priority:
-
-- `common > server > default`
-- `common > client > default`
 
 #### options
 
@@ -216,6 +204,7 @@ The merge priority:
 - `miniCSSLoader` Actually the `MiniCssExtractPlugin.loader`. Use in place of `style-loader`
 - `baseDir` **string** Serlina application baseDir
 - `merge` The [merge.smart](https://github.com/survivejs/webpack-merge#mergesmartconfiguration-configuration) function.
+- `compileEnv` **'client'|'server'** While Serlina will compile server side code and client side code, you can customize them independently.
 
 ### Custom Babel config
 

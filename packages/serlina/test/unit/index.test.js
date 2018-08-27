@@ -149,24 +149,9 @@ describe('Serlina', () => {
 
     test('webpack config', async () => {
 
-      const config = {
-        webpack: {
-          common() {
-
-          },
-          server() {
-
-          },
-          client() {
-
-          }
-        }
-      }
-
       const app = new Serlina({
         baseDir: BASE_DIR,
-        __testing: true,
-        __serlinaConfig: config
+        __testing: true
       })
       await app.prepare()
       app.inject(GLOBAL_PAYLOAD)
@@ -174,7 +159,9 @@ describe('Serlina', () => {
       const [serverSide, clientSide, vendors] = app._webpackConfig
 
       // TODO: webpack config test
-      expect(serverSide, clientSide, vendors)
+      expect(serverSide)
+      expect(clientSide)
+      expect(vendors)      
     })
 
   })

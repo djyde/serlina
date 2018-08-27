@@ -24,7 +24,7 @@ export interface MakeWebpackConfigOptions extends SerlinaInstanceOptions {
 export default (options: MakeWebpackConfigOptions) => {
 
   const {
-    customConfig = {},
+    customConfig,
     baseDir,
     outputPath,
     publicPath,
@@ -84,9 +84,6 @@ export default (options: MakeWebpackConfigOptions) => {
       .pushIf(!dev, assetsWebpackPlugin)
   }
 
-  let commonConfig = {}
-  let serverConfig = {}
-  let clientConfig = {}
   const passedOptions = {
     miniCSSLoader: MiniCssExtractPlugin.loader,
     dev,
@@ -95,15 +92,17 @@ export default (options: MakeWebpackConfigOptions) => {
     baseDir
   }
 
-  if (typeof customConfig === 'function') {
-    // TODO: derprecated
-    console.warn('[serlina]', 'Passing function to `webpack` is deprecated. Please pass your config in separate of `common`, `client` or `server`.')
-    commonConfig = clientConfig = serverConfig = merge.smart(defaultCommonConfig, customConfig(webpack, passedOptions))
-  } else {
-    commonConfig = customConfig.common ? merge.smart(defaultCommonConfig, customConfig.common(webpack, passedOptions)) : defaultCommonConfig
-    clientConfig = customConfig.client ? merge.smart(customConfig.client(webpack, passedOptions), commonConfig) : defaultCommonConfig
-    serverConfig = customConfig.server ? merge.smart(customConfig.server(webpack, passedOptions), commonConfig) : defaultCommonConfig
-  }
+  const clientSideConfig = customConfig ? merge(customConfig(webpack, {
+    ...passedOptions,
+    compileEnv: 'client'
+  }), defaultCommonConfig) : defaultCommonConfig
+
+  const serverSideConfig = customConfig ? merge(customConfig(webpack, {
+    ...passedOptions,
+    compileEnv: 'server'
+  }), defaultCommonConfig) : defaultCommonConfig
+  // don't use custom externals in server side code
+  delete serverSideConfig['externals']
 
   const clientSide = merge.smart({
     entry: {
@@ -123,12 +122,9 @@ export default (options: MakeWebpackConfigOptions) => {
       globalObject: 'this',
       libraryTarget: 'umd'
     },
-  }, clientConfig)
+  }, clientSideConfig)
 
-  const serverSideCommon = {...serverConfig}
-  // don't use custom externals in server side code
   const whitelist = [/\.(?!(?:jsx?|json)$).{1,5}$/i]
-  delete serverSideCommon['externals']
   const serverSide = merge.smart({
     entry: pages,
     target: 'node',
@@ -144,7 +140,7 @@ export default (options: MakeWebpackConfigOptions) => {
     plugins: [
       new WFP()
     ]
-  }, serverSideCommon)
+  }, serverSideConfig)
 
   const vendors = merge.smart({
     entry: {
@@ -158,7 +154,7 @@ export default (options: MakeWebpackConfigOptions) => {
       path: outputPath,
       publicPath,
     },
-  }, clientConfig)
+  }, clientSideConfig)
 
   return [
     serverSide,
