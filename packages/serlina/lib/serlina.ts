@@ -30,6 +30,7 @@ export interface SerlinaOptions {
   publicPath?: string,
   dev?: boolean,
   forceBuild?: boolean,
+  __serlinaConfig?: any,
   __testing?: boolean
 }
 
@@ -45,6 +46,7 @@ class Serlina {
   private resolveOutput;
   private options: SerlinaInstanceOptions;
   private _injectedPayload = {}
+  private _webpackConfig = {}
   private chunks;
   private assetsMap
 
@@ -82,6 +84,7 @@ class Serlina {
       // @ts-ignore
       publicPath = '/',
       forceBuild = false,
+      __serlinaConfig,
       __testing
     } = options
 
@@ -89,9 +92,11 @@ class Serlina {
       publicPath = 'http://' + DEV_SERVER_HOST + ':' + DEV_SERVER_PORT + '/'
     }
 
+    const serlinaConfig = __serlinaConfig ? __serlinaConfig : (fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {})
+
     this.options = {
       __testing,
-      serlinaConfig: fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {},
+      serlinaConfig,
       baseDir,
       dev,
       outputPath,
@@ -142,6 +147,8 @@ class Serlina {
     }
 
     const webpackConfig = this._makeWebpackConfig([this._serlinaWebpackPlugin])
+
+    this._webpackConfig = webpackConfig
 
     if (this.options.dev === true && this.options.__testing !== true) {
       const devServerOptions = {
@@ -262,6 +269,7 @@ class Serlina {
 
     return {
       string,
+      __webpackConfig: this._webpackConfig,
       __injected: injected,
       __initialProps: initialProps,
       __pageScripts: pageScripts,
