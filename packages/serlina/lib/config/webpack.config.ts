@@ -45,6 +45,12 @@ export default (options: MakeWebpackConfigOptions) => {
   let defaultCommonConfig = {
     mode: dev ? 'development' : 'production',
     context: baseDir,
+    resolve: {
+      modules: [
+        'node_modules',
+        path.resolve(__dirname, '../../node_modules'),
+      ]
+    },
     resolveLoader: {
       modules: [
         path.resolve(__dirname, '../../node_modules'),
@@ -59,7 +65,10 @@ export default (options: MakeWebpackConfigOptions) => {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: [require.resolve('babel-preset-es2015'), require.resolve('babel-preset-stage-2'), require.resolve('babel-preset-react')]
+              presets: [require.resolve('babel-preset-es2015'), require.resolve('babel-preset-stage-2'), require.resolve('babel-preset-react')],
+              plugins: [
+                require.resolve('react-hot-loader/babel')
+              ]
             }
           }
         },
@@ -79,6 +88,7 @@ export default (options: MakeWebpackConfigOptions) => {
         filename: dev ? '[name].css' : '[name]-[chunkhash].css'
       }),
     ]
+      .pushIf(dev, new webpack.NamedModulesPlugin())
       .pushIf(!__testing, new FriendlyErrorsWebpackPlugin())
       .pushIf(!dev, new WebpackBar())
       .pushIf(!dev, assetsWebpackPlugin)
@@ -122,6 +132,9 @@ export default (options: MakeWebpackConfigOptions) => {
       globalObject: 'this',
       libraryTarget: 'umd'
     },
+    plugins: [
+      new webpack.HotModuleReplacementPlugin()
+    ],
   }, clientSideConfig)
 
   const whitelist = [/\.(?!(?:jsx?|json)$).{1,5}$/i]

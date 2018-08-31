@@ -7,3 +7,5 @@ declare var window: any
 if (window.__serlina) {
   hydrate(<App />, document.querySelector('#app'))
 }
+
+export default App

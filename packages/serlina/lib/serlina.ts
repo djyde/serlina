@@ -27,6 +27,8 @@ const noCacheRequire = (pkg) => {
 export interface SerlinaOptions {
   baseDir: string,
   outputPath?: string,
+  host?: string,
+  port?: number,
   publicPath?: string,
   dev?: boolean,
   forceBuild?: boolean,
@@ -78,6 +80,8 @@ class Serlina {
   constructor(options: SerlinaOptions) {
     let {
       baseDir = '',
+      host = DEV_SERVER_HOST,
+      port = DEV_SERVER_PORT,
       // @ts-ignore
       outputPath = path.resolve(baseDir, '.serlina'),
       dev = true,
@@ -89,19 +93,22 @@ class Serlina {
     } = options
 
     if (dev) {
-      publicPath = 'http://' + DEV_SERVER_HOST + ':' + DEV_SERVER_PORT + '/'
+      publicPath = 'http://' + host + ':' + port + '/'
     }
 
     const serlinaConfig = __serlinaConfig ? __serlinaConfig : (fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {})
 
+    // @ts-ignore
     this.options = {
-      __testing,
-      serlinaConfig,
       baseDir,
-      dev,
+      host,
+      port,
       outputPath,
+      dev,
       publicPath,
       forceBuild,
+      __testing,
+      serlinaConfig,
     }
 
     this.resolveOutput = (...args) => path.resolve.call(null, this.options.outputPath, ...args)
@@ -150,17 +157,29 @@ class Serlina {
 
     this._webpackConfig = webpackConfig
 
+    const [ serverSide, clientSide, vendors ] = webpackConfig
+
     if (this.options.dev === true && this.options.__testing !== true) {
       const devServerOptions = {
         quiet: true,
-
+        inline: true,
+        hot: true,
+        port: this.options.port,
+        host: this.options.host,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+        }
       }
 
-      const compiler = webpack(webpackConfig)
+      WDS.addDevServerEntrypoints(clientSide, devServerOptions)
+
+      const compiler = webpack([ clientSide, serverSide, vendors ])
       const devServer = new WDS(compiler, devServerOptions)
 
       return new Promise((res) => {
-        devServer.listen(DEV_SERVER_PORT, DEV_SERVER_HOST, () => {
+        devServer.listen(this.options.port, this.options.host, () => {
           this.__eventBus.on('compiled', res)
         })
       })

@@ -21,7 +21,7 @@ export default class Page2 extends React.Component {
           <title>Page2</title>
           <meta charSet="utf8" />
         </Head>
-        <Button onClick={e => alert('works')}>test</Button>
+        <Button onClick={e => alert('works')}>testf!?!</Button>
         {this.props.foo}
       </div>
     )
