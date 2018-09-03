@@ -110,7 +110,6 @@ class Serlina {
   _serlinaWebpackPlugin = {
     apply: (compiler) => {
       compiler.hooks.done.tap('serlina', (stats) => {
-        this.__eventBus.emit('compiled')
 
         const statsJson = stats.toJson({
         })
@@ -119,6 +118,7 @@ class Serlina {
         
         if (chunks.find(chunk => chunk.id === '_SERLINA_MAIN')) {
           this.chunks = chunks
+          this.__eventBus.emit('compiled')
         }
       })
     }
@@ -128,6 +128,15 @@ class Serlina {
     const webpackConfig = this._makeWebpackConfig()
     rimraf.sync(this.options.outputPath)
     return webpack(webpackConfig)
+  }
+
+  private async waitForChunks () {
+    console.log('[serlina]', 'Waiting for compilation finish.')
+    return new Promise((resolve) => {
+      this.__eventBus.on('compiled', () => {
+        resolve()
+      })
+    })
   }
 
   prepare() {
@@ -222,6 +231,11 @@ class Serlina {
     let pageStyles = [] as string[]
 
     if (this.options.dev) {
+
+      if (!this.chunks) {
+        await this.waitForChunks()
+      }
+
       const pageChunk = this.chunks.find(chunk => chunk.id === pageName)
 
       let files = [] as string[]
