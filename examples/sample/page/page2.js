@@ -6,6 +6,7 @@ import {
   Button
 } from 'antd'
 import PrimaryButton from '../components/PrimaryButton'
+import * as utils from '../utils'
 
 class Page2 extends React.Component {
 
@@ -22,7 +23,7 @@ class Page2 extends React.Component {
           <title>Page2</title>
           <meta charSet="utf8" />
         </Head>
-        <Button onClick={e => alert('works!')}>HMR!!!! Amazing..</Button>
+        <Button onClick={e => alert('works!')}>HMR!!!! Amazing!!.??. {utils.foo} </Button>
         <PrimaryButton>Hi?</PrimaryButton>
         {this.props.foo}
       </div>
