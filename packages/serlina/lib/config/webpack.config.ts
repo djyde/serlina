@@ -62,15 +62,17 @@ export default (options: MakeWebpackConfigOptions) => {
         {
           test: /\.js$/,
           exclude: /(node_modules)/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: [require.resolve('babel-preset-es2015'), require.resolve('babel-preset-stage-2'), require.resolve('babel-preset-react')],
-              plugins: [
-                require.resolve('react-hot-loader/babel')
-              ]
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: [require.resolve('babel-preset-es2015'), require.resolve('babel-preset-stage-2'), require.resolve('babel-preset-react')],
+                plugins: [
+                  require.resolve('react-hot-loader/babel')
+                ]
+              }
             }
-          }
+          ]
         },
         {
           test: /\.css$/,
@@ -119,6 +121,15 @@ export default (options: MakeWebpackConfigOptions) => {
       ...pages,
       '_SERLINA_MAIN': path.resolve(__dirname, '../client/render')
     },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /(node_modules)/,
+          loader: require.resolve('./serlina-hot-reload-loader')
+        }
+      ],
+    },
     externals: {
       react: 'React',
       'react-dom': 'ReactDOM'
@@ -130,11 +141,12 @@ export default (options: MakeWebpackConfigOptions) => {
       publicPath,
       library: '__serlina',
       globalObject: 'this',
-      libraryTarget: 'umd'
+      libraryTarget: 'umd',
+      hotUpdateChunkFilename: 'hot/hot-update.js',
+      hotUpdateMainFilename: 'hot/hot-update.json'
     },
     plugins: [
-      new webpack.HotModuleReplacementPlugin()
-    ],
+    ].pushIf(dev, new webpack.HotModuleReplacementPlugin()),
   }, clientSideConfig)
 
   const whitelist = [/\.(?!(?:jsx?|json)$).{1,5}$/i]

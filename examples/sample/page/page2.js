@@ -1,16 +1,17 @@
 import React from 'react'
 import '../style/index.less'
 import Head from 'serlina/head'
-
+import { hot } from 'react-hot-loader'
 import {
   Button
 } from 'antd'
+import PrimaryButton from '../components/PrimaryButton'
 
-export default class Page2 extends React.Component {
+class Page2 extends React.Component {
 
   static async getInitialProps ({ req }) {
     return {
-      foo: 'foo'
+      foo: 'foo??!'
     }
   }
 
@@ -21,9 +22,12 @@ export default class Page2 extends React.Component {
           <title>Page2</title>
           <meta charSet="utf8" />
         </Head>
-        <Button onClick={e => alert('works')}>testf!?!</Button>
+        <Button onClick={e => alert('works!')}>HMR!!!! Amazing..</Button>
+        <PrimaryButton>Hi?</PrimaryButton>
         {this.props.foo}
       </div>
     )
   }
 }
+
+export default Page2
