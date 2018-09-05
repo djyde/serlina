@@ -1,7 +1,4 @@
-import { hot, setConfig } from 'react-hot-loader'
 import * as React from 'react'
-
-setConfig({ logLevel: 'debug' })
 
 declare var window: any
 
