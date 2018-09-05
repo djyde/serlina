@@ -9,6 +9,8 @@ const AssetsWebpackPlugin = require('assets-webpack-plugin')
 const WebpackBar = require('webpackbar')
 const WFP = require('write-file-webpack-plugin')
 const nodeExternals = require('webpack-node-externals')
+const ReactHotLoader = require.resolve('react-hot-loader/babel')
+const SerlinaHotLoader = require.resolve('./serlina-hot-reload-loader')
 
 export interface MakeWebpackConfigOptions extends SerlinaInstanceOptions {
   customConfig?: any,
@@ -68,7 +70,7 @@ export default (options: MakeWebpackConfigOptions) => {
               options: {
                 presets: [require.resolve('babel-preset-es2015'), require.resolve('babel-preset-stage-2'), require.resolve('babel-preset-react')],
                 plugins: [
-                  require.resolve('react-hot-loader/babel')
+                  ReactHotLoader
                 ]
               }
             }
@@ -101,6 +103,8 @@ export default (options: MakeWebpackConfigOptions) => {
     dev,
     merge: merge.smart,
     __testing: __testing,
+    ReactHotLoader,
+    SerlinaHotLoader,
     baseDir
   }
 
@@ -126,7 +130,12 @@ export default (options: MakeWebpackConfigOptions) => {
         {
           test: /\.js$/,
           exclude: /(node_modules)/,
-          loader: require.resolve('./serlina-hot-reload-loader')
+          use: {
+            loader: SerlinaHotLoader,
+            options: {
+              baseDir
+            }
+          },
         }
       ],
     },

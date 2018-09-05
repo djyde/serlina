@@ -206,6 +206,11 @@ The configuration you return will merged to the default configuration using [`we
 - `merge` The [merge.smart](https://github.com/survivejs/webpack-merge#mergesmartconfiguration-configuration) function.
 - `compileEnv` **'client'|'server'** While Serlina will compile server side code and client side code, you can customize them independently.
 
+For advance user:
+
+- `ReactHotLoader`: `react-hot-loader/babel` loader. Useful for building Serlina plugin.
+- `SerlinaHotLoader` Must use it if using `ReactHotLoader`.
+
 ### Custom Babel config
 
 All you need to do is adding a `.babelrc` in `baseDir`.
