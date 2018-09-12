@@ -29,12 +29,12 @@ Create a folder structure like:
 
 ```bash
 ├── index.js
-├── page
+├── pages
 │   └── page1.js
 ```
 
 ```js
-// page/page1.js
+// pages/page1.js
 
 export default () => {
   return <div>Hello Serlina!</div>
