@@ -1,7 +1,6 @@
 import React from 'react'
 import '../style/index.less'
 import Head from 'serlina/head'
-import { hot } from 'react-hot-loader'
 import {
   Button
 } from 'antd'
