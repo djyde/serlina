@@ -40,7 +40,7 @@ export default (options: MakeWebpackConfigOptions) => {
   const entries = {}
   
   pages.forEach(page => {
-    entries[page.split('.').slice(0, -1).join('.')] = './page/' + page
+    entries[page.split('.').slice(0, -1).join('.')] = './pages/' + page
   })
 
   const assetsWebpackPlugin = new AssetsWebpackPlugin({

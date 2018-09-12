@@ -56,7 +56,7 @@ class Serlina {
   private __eventBus = new EventBus()
 
   get _pageEntries() {
-    const pagesPath = path.resolve(this.options.baseDir, './page')
+    const pagesPath = path.resolve(this.options.baseDir, './pages')
 
     const pages = glob.sync('**/*.*', {
       cwd: pagesPath

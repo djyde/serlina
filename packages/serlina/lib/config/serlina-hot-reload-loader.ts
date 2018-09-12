@@ -3,7 +3,7 @@ import { getOptions } from 'loader-utils'
 
 function Loader (content, map, meta) {
   const options = getOptions(this)
-  if (this.context.match(path.resolve(options.baseDir, './page'))) {
+  if (this.context.match(path.resolve(options.baseDir, './pages'))) {
     return `
       const { hot } = require('react-hot-loader')
       ${content}

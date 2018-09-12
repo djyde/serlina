@@ -20,7 +20,7 @@ class Serve {
     const map = {}
 
     glob.sync('**/*.*', {
-      cwd: path.resolve(baseDir, './page')
+      cwd: path.resolve(baseDir, './pages')
     }).map(filename => filename.split('.')[0]).forEach(page => {
       map['/' + page] = page
     })
