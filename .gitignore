@@ -6,3 +6,4 @@ package-lock.json
 .serlina
 dist
 packages/serlina-react-router/lib
+packages/serlina-apollo/lib
