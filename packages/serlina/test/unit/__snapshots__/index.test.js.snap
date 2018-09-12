@@ -20,10 +20,3 @@ exports[`Serlina dev mode snapshot 2`] = `
         window.__serlina__DATA.pageInitialProps = {\\"foo\\":\\"foo\\"};
       </script></head><body><div id=\\"app\\"><div data-reactroot=\\"\\">Page2 - <!-- -->foo</div></div><script src=\\"http://127.0.0.1:3000/page2.js\\"></script><script src=\\"http://127.0.0.1:3000/_SERLINA_MAIN.js\\"></script></body></html>"
 `;
-
-exports[`Serlina prod mode nested page 1`] = `
-"<!DOCTYPE html><html data-reactroot=\\"\\"><head><title data-react-helmet=\\"true\\"></title><script src=\\"/public/_SERLINA_VENDOR-3e17441af9a15044f51b.js\\"></script><script>
-        window.__serlina__DATA = {};
-        window.__serlina__DATA.pageInitialProps = {};
-      </script></head><body><div id=\\"app\\"><div data-reactroot=\\"\\">User List</div></div><script src=\\"/public/user/list.cmd.js\\"></script><script src=\\"/public/_SERLINA_MAIN-e87cb395e36155f923b9.js\\"></script></body></html>"
-`;
