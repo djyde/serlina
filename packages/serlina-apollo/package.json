@@ -1,6 +1,6 @@
 {
   "name": "serlina-apollo",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "scripts": {
     "start": "tsc --watch"
   },
@@ -8,7 +8,7 @@
   "dependencies": {
   },
   "peerDependencies": {
-
+    "serlina": "^1"
   },
   "devDependencies": {
     "react-dom": "^16.4.2",

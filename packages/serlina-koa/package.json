@@ -1,6 +1,6 @@
 {
   "name": "serlina-koa",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "scripts": {
     "start": "node example"
   },
@@ -8,6 +8,6 @@
     "path-to-regexp": "^2.2.1"
   },
   "peerDependencies": {
-    "serlina": "^0.1"
+    "serlina": "^1"
   }
 }
