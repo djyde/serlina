@@ -99,8 +99,6 @@ export default (options: MakeWebpackConfigOptions) => {
       }),
     ]
       .pushIf(dev, new webpack.NamedModulesPlugin())
-      .pushIf(!__testing, new FriendlyErrorsWebpackPlugin())
-      .pushIf(!dev, new WebpackBar())
       .pushIf(!dev, assetsWebpackPlugin)
   }
 
@@ -161,6 +159,10 @@ export default (options: MakeWebpackConfigOptions) => {
       hotUpdateMainFilename: 'hot/hot-update.json'
     },
     plugins: [
+      new WebpackBar({
+        name: 'client side',
+        minimal: !dev
+      })
     ].pushIf(dev, new webpack.HotModuleReplacementPlugin()),
   }, clientSideConfig)
 
@@ -178,7 +180,11 @@ export default (options: MakeWebpackConfigOptions) => {
       libraryTarget: 'commonjs2'
     },
     plugins: [
-      new WFP()
+      new WFP(),
+      new WebpackBar({
+        name: 'server side',
+        minimal: !dev
+      })
     ]
   }, serverSideConfig)
 
@@ -194,6 +200,8 @@ export default (options: MakeWebpackConfigOptions) => {
       path: outputPath,
       publicPath,
     },
+    plugins: [
+    ]
   }, clientSideConfig)
 
   return [

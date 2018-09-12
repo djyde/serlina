@@ -10,6 +10,6 @@
     "react-dom": "^16.4.2",
     "serlina": "^0",
     "serlina-plugin-antd": "^0.2",
-    "serlina-serve": "^0"
+    "serlina-serve": "^1"
   }
 }

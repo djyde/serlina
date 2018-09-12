@@ -10,7 +10,7 @@
     "react-dom": "^16.4.2"
   },
   "devDependencies": {
-    "serlina": "^0.1.12",
+    "serlina": "^1",
     "koa": "^2.5.2",
     "koa-router": "^7.4.0",
     "graphql": "^0.13.2",
