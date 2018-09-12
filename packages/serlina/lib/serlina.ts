@@ -5,6 +5,7 @@ import * as fs from 'fs'
 import * as ReactDOMServer from 'react-dom/server'
 import * as path from 'path'
 import * as React from 'react'
+import * as glob from 'glob'
 const WDS = require('webpack-dev-server')
 import Document from './components/Document'
 const rimraf = require('rimraf')
@@ -56,16 +57,12 @@ class Serlina {
 
   get _pageEntries() {
     const pagesPath = path.resolve(this.options.baseDir, './page')
-    const pageFileNames = fs.readdirSync(pagesPath)
-    const pages = {}
 
-    pageFileNames.forEach(filename => {
-      // remove the extensions
-      const pageName = filename.split('.').slice(0, -1).join('.')
-      pages[pageName] = './page/' + filename
+    const pages = glob.sync('**/*.*', {
+      cwd: pagesPath
     })
 
-    return pages
+    return pages as string[]
   }
 
   _makeWebpackConfig = (plugins = [] as any[]) => {

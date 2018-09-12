@@ -20,7 +20,7 @@ export interface MakeWebpackConfigOptions extends SerlinaInstanceOptions {
   plugins: any[],
   dev: boolean,
   __testing?: boolean,
-  pages: { [pageName: string]: string }
+  pages: string[]
 }
 
 export default (options: MakeWebpackConfigOptions) => {
@@ -33,9 +33,15 @@ export default (options: MakeWebpackConfigOptions) => {
     serlinaConfig,
     dev,
     plugins,
-    pages = {},
+    pages,
     __testing
   } = options
+
+  const entries = {}
+  
+  pages.forEach(page => {
+    entries[page.split('.').slice(0, -1).join('.')] = './page/' + page
+  })
 
   const assetsWebpackPlugin = new AssetsWebpackPlugin({
     path: outputPath,
@@ -122,7 +128,7 @@ export default (options: MakeWebpackConfigOptions) => {
 
   const clientSide = merge.smart({
     entry: {
-      ...pages,
+      ...entries,
       '_SERLINA_MAIN': path.resolve(__dirname, '../client/render')
     },
     module: {
@@ -160,7 +166,7 @@ export default (options: MakeWebpackConfigOptions) => {
 
   const whitelist = [/\.(?!(?:jsx?|json)$).{1,5}$/i]
   const serverSide = merge.smart({
-    entry: pages,
+    entry: entries,
     target: 'node',
     externals: [nodeExternals({
       whitelist: serlinaConfig.nodeExternalsWhitelist ? whitelist.concat(serlinaConfig.nodeExternalsWhitelist) : whitelist

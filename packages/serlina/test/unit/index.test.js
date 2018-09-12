@@ -82,6 +82,11 @@ describe('Serlina', () => {
         '_SERLINA_MAIN.js'
       ])
     })
+
+    test('nested page', async () => {
+      const rendered = await app.render('user/list')
+      expect(rendered.string).toMatchSnapshot()
+    })
   })
 
   describe('prod mode', () => {
@@ -141,6 +146,11 @@ describe('Serlina', () => {
         assetsMap['_SERLINA_VENDOR'].js,
         assetsMap['_SERLINA_MAIN'].js
       ])
+    })
+
+    test('nested page', async () => {
+      const rendered = await app.render('user/list')
+      expect(rendered.string).toMatchSnapshot()
     })
 
   })
