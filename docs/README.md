@@ -61,7 +61,7 @@ serlina.prepare()
         res.writeHead(200, { 'Content-Type': 'text/html' })
         if (req.url === '/page1') {
           const rendered = await serlina.render('page1')
-          res.write(rendered.string)
+          res.write(rendered.body)
         } else {
           res.write('works!')
         }
@@ -90,7 +90,7 @@ serlina.prepare()
         res.writeHead(200, { 'Content-Type': 'text/html' })
         if (req.url === '/page1') {
           const rendered = await serlina.render('page1')
-          res.write(rendered.string)
+          res.write(rendered.body)
         } else {
           res.write('works!')
         }
@@ -292,6 +292,25 @@ const app = new Serlina({
 ```
 
 ## FAQ
+
+### Can I use nested page?
+
+Yes you can. If you have nested page files like:
+
+```
+- page
+  - user
+    - list.js
+    - dashboard.js
+```
+
+You can render them by:
+
+```js
+await serlina.render('user/list')
+
+await serlina.render('user/dashboard')
+```
 
 ### How to detect browser or server?
 

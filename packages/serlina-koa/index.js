@@ -25,7 +25,7 @@ const handler = (options = {}) => {
 
       if (renderedPath) {
         const rendered = await serlina.render(renderedPath, injected)
-        ctx.body = rendered.string
+        ctx.body = rendered.body
       }
     }
   }

@@ -1,7 +1,7 @@
 {
   "name": "sample",
   "scripts": {
-    "test": "node index",
+    "test": "serlina-serve dev",
     "build": "serlina build . --publicPath http://localhost:1024/"
   },
   "dependencies": {
@@ -9,6 +9,7 @@
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "serlina": "^0",
-    "serlina-plugin-antd": "^0.2"
+    "serlina-plugin-antd": "^0.2",
+    "serlina-serve": "^0"
   }
 }

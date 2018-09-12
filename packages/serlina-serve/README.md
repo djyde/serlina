@@ -8,7 +8,7 @@
 
 ## Usage
 
-serlina-serve will map all pages in `/page` to route (files as router).
+serlina-serve will map all pages in `/pages` to route (files as router).
 
 ```
 npm i react react-dom serlina-serve --save

@@ -12,7 +12,7 @@ serlina.prepare().then(() => {
   const router = new Router()
 
   router.get('/home*', async (ctx) => {
-    ctx.body = (await serlina.render('home', { ctx })).string
+    ctx.body = (await serlina.render('home', { ctx })).body
   })
 
   app.use(router.routes())

@@ -3,6 +3,7 @@ const { Serlina } = require('serlina')
 const serlinaKoa = require('serlina-koa')
 const path = require('path')
 const fs = require('fs')
+const glob = require('glob')
 
 class Serve {
 
@@ -18,7 +19,9 @@ class Serve {
 
     const map = {}
 
-    fs.readdirSync(path.resolve(baseDir, './page')).map(filename => filename.split('.')[0]).forEach(page => {
+    glob.sync('**/*.*', {
+      cwd: path.resolve(baseDir, './pages')
+    }).map(filename => filename.split('.')[0]).forEach(page => {
       map['/' + page] = page
     })
 

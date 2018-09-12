@@ -6,7 +6,7 @@ Create a folder structure like:
 
 ```bash
 ├── index.js
-├── page
+├── pages
 │   └── page1.js
 ```
 
@@ -19,7 +19,7 @@ npm i serlina react react-dom --save
 Firstly write your first page:
 
 ```js
-// page/page1.js
+// pages/page1.js
 
 export default () => {
   return <div>Hello Serlina!</div>
@@ -46,7 +46,7 @@ serlina.prepare()
         res.writeHead(200, { 'Content-Type': 'text/html' })
         if (req.url === '/page1') {
           const rendered = await serlina.render('page1')
-          res.write(rendered.string)
+          res.write(rendered.body)
         } else {
           res.write('works!')
         }

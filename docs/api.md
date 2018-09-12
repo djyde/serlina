@@ -52,7 +52,7 @@ Render a page.
 
 `Rendered` is an object contains:
 
-- `string` The React page rendered string. Usually send it to the client.
+- `body` The React page rendered string body. Usually send it to the client.
 
 <p class="warning">Don't call `serlina.render()` before `prepare()` resolving.</p>
 
