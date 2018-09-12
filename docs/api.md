@@ -41,10 +41,6 @@ Inject a payload which will be used by the page in `static getInitialProps()`.
 
 `serlina.render(pageName: string, payload?: any): Promise<Rendered>`
 
-### build
-
-Run `serlina build` manually. Return a Webpack [compiler instance](https://webpack.js.org/api/node/#compiler-instance).
-
 Render a page. 
 
 - `pageName` can start with `/` or not.
@@ -55,6 +51,10 @@ Render a page.
 - `body` The React page rendered string body. Usually send it to the client.
 
 <p class="warning">Don't call `serlina.render()` before `prepare()` resolving.</p>
+
+### build
+
+Run `serlina build` manually. Return a Webpack [compiler instance](https://webpack.js.org/api/node/#compiler-instance).
 
 ## Command Line Tool
 
