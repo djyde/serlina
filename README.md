@@ -61,7 +61,7 @@ serlina.prepare()
         res.writeHead(200, { 'Content-Type': 'text/html' })
         if (req.url === '/page1') {
           const rendered = await serlina.render('page1')
-          res.write(rendered.string)
+          res.write(rendered.body)
         } else {
           res.write('works!')
         }

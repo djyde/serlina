@@ -298,7 +298,7 @@ class Serlina {
     }))
 
     return {
-      string,
+      body: string,
       __webpackConfig: this._webpackConfig,
       __injected: injected,
       __initialProps: initialProps,

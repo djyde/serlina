@@ -29,9 +29,9 @@ describe('Serlina', () => {
 
     test('snapshot', async () => {
       const rendered = await app.render(PAGE1)
-      expect(rendered.string).toMatchSnapshot()
+      expect(rendered.body).toMatchSnapshot()
       const rendered2 = await app.render(PAGE2)
-      expect(rendered2.string).toMatchSnapshot()
+      expect(rendered2.body).toMatchSnapshot()
     })
 
     test('inject', async () => {
@@ -85,7 +85,7 @@ describe('Serlina', () => {
 
     test('nested page', async () => {
       const rendered = await app.render('user/list')
-      expect(rendered.string).toMatchSnapshot()
+      expect(rendered.body).toMatchSnapshot()
     })
   })
 
@@ -150,7 +150,7 @@ describe('Serlina', () => {
 
     test('nested page', async () => {
       const rendered = await app.render('user/list')
-      expect(rendered.string)
+      expect(rendered.body)
     })
 
   })
