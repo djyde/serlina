@@ -1,6 +1,6 @@
 # Plugins
 
-We can create reusable configs, and call it `plugins`. 
+A Serlina plugin means a reusable Serlina config. 
 
 ## Use a plugin
 
@@ -12,19 +12,6 @@ For example, an `serlina-plugin-antd` includes some webpack config for using ant
 const { withAntd } = require('serlina-plugin-antd')
 
 module.exports = withAntd()
-```
-
-## Write a plugin
-
-A plugin is just a function that return a merged config object:
-
-```js
-
-module.exports = (config = {}) => {
-  return Object.assign({
-    // your config...
-  }, config)
-}
 ```
 
 ### Official plugins
