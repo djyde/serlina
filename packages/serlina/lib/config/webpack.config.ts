@@ -99,7 +99,6 @@ export default (options: MakeWebpackConfigOptions) => {
       }),
     ]
       .pushIf(dev, new webpack.NamedModulesPlugin())
-      .pushIf(!dev, assetsWebpackPlugin)
   }
 
   const passedOptions = {
@@ -163,7 +162,9 @@ export default (options: MakeWebpackConfigOptions) => {
         name: 'client side',
         minimal: !dev
       })
-    ].pushIf(dev, new webpack.HotModuleReplacementPlugin()),
+    ].pushIf(dev, new webpack.HotModuleReplacementPlugin())
+    .pushIf(!dev, assetsWebpackPlugin)
+    ,
   }, clientSideConfig)
 
   const whitelist = [/\.(?!(?:jsx?|json)$).{1,5}$/i]
@@ -202,6 +203,7 @@ export default (options: MakeWebpackConfigOptions) => {
     },
     plugins: [
     ]
+    .pushIf(!dev, assetsWebpackPlugin)
   }, clientSideConfig)
 
   return [
