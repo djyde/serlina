@@ -2,7 +2,6 @@ import { SerlinaInstanceOptions } from "../serlina";
 import 'push-if'
 const webpack = require('webpack')
 const path = require('path')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const merge = require('webpack-merge')
 const AssetsWebpackPlugin = require('assets-webpack-plugin')
@@ -53,6 +52,7 @@ export default (options: MakeWebpackConfigOptions) => {
   let defaultCommonConfig = {
     mode: dev ? 'development' : 'production',
     context: baseDir,
+    devtool: false,
     resolve: {
       modules: [
         'node_modules',
@@ -74,9 +74,10 @@ export default (options: MakeWebpackConfigOptions) => {
             {
               loader: 'babel-loader',
               options: {
-                presets: [require.resolve('babel-preset-es2015'), require.resolve('babel-preset-stage-2'), require.resolve('babel-preset-react')],
+                presets: [require.resolve('@babel/preset-env'), require.resolve('@babel/preset-react')],
                 plugins: [
-                  ReactHotLoader
+                  ReactHotLoader,
+                  require.resolve('@babel/plugin-proposal-class-properties')
                 ]
               }
             }
@@ -192,7 +193,7 @@ export default (options: MakeWebpackConfigOptions) => {
   const vendors = merge.smart({
     entry: {
       '_SERLINA_VENDOR': [
-        require.resolve('babel-polyfill'),
+        require.resolve('@babel/polyfill'),
         path.resolve(__dirname, '../client/common')
       ]
     },

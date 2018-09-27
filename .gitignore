@@ -7,3 +7,4 @@ package-lock.json
 dist
 packages/serlina-react-router/lib
 packages/serlina-apollo/lib
+.awcache

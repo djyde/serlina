@@ -1,4 +1,4 @@
-import 'babel-polyfill'
+import '@babel/polyfill'
 const webpack = require('webpack')
 import makeWebpackConfig, { MakeWebpackConfigOptions } from './config/webpack.config'
 import * as fs from 'fs'
