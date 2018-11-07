@@ -137,12 +137,6 @@ export default (options: MakeWebpackConfigOptions) => {
   // don't use custom externals in server side code
   delete serverSideConfig['externals']
 
-  const reporter = {
-    done (context) {
-      console.log('done')
-    }
-  }
-
   const clientSide = merge.smart({
     entry: {
       ...entries,
@@ -167,9 +161,9 @@ export default (options: MakeWebpackConfigOptions) => {
       new WebpackBar({
         name: 'client side',
         minimal: !dev,
-        color: 'green',
+        // color: 'green',
         done: onFinishedClientSideCompilation || noop,
-      })
+      }) 
     ]
     .pushIf(!dev, assetsWebpackPlugin)
     ,
@@ -192,11 +186,9 @@ export default (options: MakeWebpackConfigOptions) => {
       new WFP(),
       new WebpackBar({
         name: 'server side',
-        color: 'orange',
+        // color: 'orange',
         minimal: !dev,
-        done(stats) {
-          console.log(stats)
-        }
+        done: onFinishedClientSideCompilation || noop
       })
     ]
   }, serverSideConfig)

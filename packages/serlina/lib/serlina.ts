@@ -112,15 +112,16 @@ class Serlina {
   }
 
   _onFinishedClientSideCompilation = (state, ctx) => {
-    this.chunks = state['client side'].stats.toJson().chunks
-    state['client side'].stats.toJson().errors.forEach(error => {
+    const json = state['client side'].stats.toJson()
+    this.chunks = json.chunks
+    this.__eventBus.emit('compiled')
+    json.errors.forEach(error => {
       console.log(error)
     })
-    this.__eventBus.emit('compiled')
   }
 
   build() {
-    const webpackConfig = this._makeWebpackConfig()
+    const webpackConfig = this._makeWebpackConfig(this._onFinishedClientSideCompilation)
     rimraf.sync(this.options.outputPath)
     return webpack(webpackConfig)
   }
