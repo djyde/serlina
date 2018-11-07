@@ -8,7 +8,7 @@
     "antd": "^3.7.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "serlina": "^0",
+    "serlina": "^1",
     "serlina-plugin-antd": "^0.2",
     "serlina-serve": "^1"
   }

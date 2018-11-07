@@ -213,11 +213,33 @@ For advance user:
 
 ### Custom Babel config
 
-All you need to do is adding a `.babelrc` in `baseDir`.
+All you need to do is adding a `babel.config.js` in `baseDir`, and extend Serlina built in config:
+
+```js
+// baseDir/babel.config.js
+
+module.exports = function (api) {
+  // It must be true
+  api.cache(true)
+
+  return {
+    presets: [/** your presets */ ],
+    plugins: [/** your plugins */],
+    // extend Serlina built in config
+    extends: require.resolve('serlina/babel.config.js')
+  }
+}
+```
 
 Serlina comes with these Babel config:
 
-- presets: `['es2015', 'stage2', 'react']`
+- presets
+  - `@babel/preset-env`
+  - `@babel/preset-react`
+- plugins
+  - `@babel/plugin-proposal-class-properties`
+
+See more on [Babel document](https://babeljs.io/docs/en/configuration#babelconfigjs)
 
 ### Custom 404 page
 

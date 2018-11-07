@@ -65,10 +65,10 @@ class Serlina {
     return pages as string[]
   }
 
-  _makeWebpackConfig = (plugins = [] as any[]) => {
+  _makeWebpackConfig = (onFinishedClientSideCompilation?) => {
     return makeWebpackConfig({
       ...this.options,
-      plugins,
+      onFinishedClientSideCompilation,
       pages: this._pageEntries,
       customConfig: this.options.serlinaConfig.webpack
     })
@@ -111,21 +111,9 @@ class Serlina {
     this.resolveOutput = (...args) => path.resolve.call(null, this.options.outputPath, ...args)
   }
 
-  _serlinaWebpackPlugin = {
-    apply: (compiler) => {
-      compiler.hooks.done.tap('serlina', (stats) => {
-
-        const statsJson = stats.toJson({
-        })
-
-        const { chunks } = statsJson
-        
-        if (chunks.find(chunk => chunk.id === '_SERLINA_MAIN')) {
-          this.chunks = chunks
-          this.__eventBus.emit('compiled')
-        }
-      })
-    }
+  _onFinishedClientSideCompilation = (state, ctx) => {
+    this.chunks = state['client side'].stats.toJson().chunks
+    this.__eventBus.emit('compiled')
   }
 
   build() {
@@ -159,7 +147,7 @@ class Serlina {
       }
     }
 
-    const webpackConfig = this._makeWebpackConfig([this._serlinaWebpackPlugin])
+    const webpackConfig = this._makeWebpackConfig(this._onFinishedClientSideCompilation)
 
     this._webpackConfig = webpackConfig
 
@@ -168,18 +156,18 @@ class Serlina {
     if (this.options.dev === true && this.options.__testing !== true) {
       const devServerOptions = {
         quiet: true,
-        inline: true,
-        hot: true,
-        port: this.options.port,
-        host: this.options.host,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-          "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-        }
+        // inline: true,
+        // hot: true,
+        // port: this.options.port,
+        // host: this.options.host,
+        // headers: {
+        //   "Access-Control-Allow-Origin": "*",
+        //   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        //   "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+        // }
       }
 
-      WDS.addDevServerEntrypoints(clientSide, devServerOptions)
+      // WDS.addDevServerEntrypoints(clientSide, devServerOptions)
 
       const compiler = webpack([ clientSide, serverSide, vendors ])
       const devServer = new WDS(compiler, devServerOptions)
@@ -255,7 +243,6 @@ class Serlina {
       const pageChunk = this.chunks.find(chunk => chunk.id === pageName)
 
       let files = [] as string[]
-
 
       if (pageChunk) {
         files = pageChunk.files

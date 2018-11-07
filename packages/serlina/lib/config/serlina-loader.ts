@@ -5,15 +5,12 @@ function Loader (content, map, meta) {
   const options = getOptions(this)
   if (this.context.match(path.resolve(options.baseDir, './pages'))) {
     return `
-      const { hot } = require('react-hot-loader')
-      ${content}
-      if (module.hot && module.exports.default) {
-        exports.default = hot(module)(module.exports.default)      
-      }
+      console.log('start here');
+      ${content};
+      console.log(module)
     `
   } else {
     return content
   }
 }
-
 export default Loader

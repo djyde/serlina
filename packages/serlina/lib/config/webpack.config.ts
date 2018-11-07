@@ -8,18 +8,21 @@ const AssetsWebpackPlugin = require('assets-webpack-plugin')
 const WebpackBar = require('webpackbar')
 const WFP = require('write-file-webpack-plugin')
 const nodeExternals = require('webpack-node-externals')
-const ReactHotLoader = require.resolve('react-hot-loader/babel')
-const SerlinaHotLoader = require.resolve('./serlina-hot-reload-loader')
+import * as fs from 'fs'
+const SerlinaLoader = require.resolve('./serlina-loader')
+
+const noop = () => {}
 
 export interface MakeWebpackConfigOptions extends SerlinaInstanceOptions {
   customConfig?: any,
   baseDir: string,
   outputPath: string,
   publicPath: string,
-  plugins: any[],
+  plugins?: any[],
   dev: boolean,
   __testing?: boolean,
-  pages: string[]
+  pages: string[],
+  onFinishedClientSideCompilation?: () => void
 }
 
 export default (options: MakeWebpackConfigOptions) => {
@@ -31,9 +34,9 @@ export default (options: MakeWebpackConfigOptions) => {
     publicPath,
     serlinaConfig,
     dev,
-    plugins,
     pages,
-    __testing
+    __testing,
+    onFinishedClientSideCompilation,
   } = options
 
   const entries = {}
@@ -74,13 +77,16 @@ export default (options: MakeWebpackConfigOptions) => {
             {
               loader: 'babel-loader',
               options: {
-                presets: [require.resolve('@babel/preset-env'), require.resolve('@babel/preset-react')],
-                plugins: [
-                  ReactHotLoader,
-                  require.resolve('@babel/plugin-proposal-class-properties')
-                ]
+                root: baseDir,
+                configFile: fs.existsSync(path.resolve(baseDir, './babel.config.js')) ? path.resolve(baseDir, './babel.config.js') :  path.resolve(__dirname, '../../babel.config.js')
               }
-            }
+            },
+            // {
+            //   loader: SerlinaLoader,
+            //   options: {
+            //     baseDir
+            //   }
+            // }
           ]
         },
         {
@@ -94,7 +100,6 @@ export default (options: MakeWebpackConfigOptions) => {
       ]
     },
     plugins: [
-      ...plugins,
       new MiniCssExtractPlugin({
         filename: dev ? '[name].css' : '[name]-[chunkhash].css'
       }),
@@ -107,8 +112,6 @@ export default (options: MakeWebpackConfigOptions) => {
     dev,
     merge: merge.smart,
     __testing: __testing,
-    ReactHotLoader,
-    SerlinaHotLoader,
     baseDir
   }
 
@@ -129,20 +132,6 @@ export default (options: MakeWebpackConfigOptions) => {
       ...entries,
       '_SERLINA_MAIN': path.resolve(__dirname, '../client/render')
     },
-    module: {
-      rules: [
-        {
-          test: /\.js$/,
-          exclude: /(node_modules)/,
-          use: {
-            loader: SerlinaHotLoader,
-            options: {
-              baseDir
-            }
-          },
-        }
-      ],
-    },
     externals: {
       react: 'React',
       'react-dom': 'ReactDOM'
@@ -161,9 +150,10 @@ export default (options: MakeWebpackConfigOptions) => {
     plugins: [
       new WebpackBar({
         name: 'client side',
-        minimal: !dev
+        minimal: !dev,
+        done: onFinishedClientSideCompilation || noop,
       })
-    ].pushIf(dev, new webpack.HotModuleReplacementPlugin())
+    ]
     .pushIf(!dev, assetsWebpackPlugin)
     ,
   }, clientSideConfig)
@@ -194,8 +184,8 @@ export default (options: MakeWebpackConfigOptions) => {
     entry: {
       '_SERLINA_VENDOR': [
         require.resolve('@babel/polyfill'),
-        path.resolve(__dirname, '../client/common')
-      ]
+        path.resolve(__dirname, '../client/common'),
+      ],
     },
     output: {
       filename: dev ? '[name].js' : '[name]-[chunkhash].js',

@@ -7,7 +7,7 @@ export default class Counter extends React.Component {
   }
 
   incr = () => {
-    this.setState({ count: this.state.count + 10 })
+    this.setState({ count: this.state.count + 1 })
   }
 
   decr = () => {
@@ -20,7 +20,7 @@ export default class Counter extends React.Component {
       <div>
         <h2>Hot Reload Counter</h2>
         <h2>{this.state.count}</h2>
-        <button onClick={this.incr}>+</button>
+        <button onClick={this.incr}>+d</button>
         <button onClick={this.decr}>-</button>
       </div>
     )
