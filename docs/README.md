@@ -339,6 +339,12 @@ Serlina has built in TypeScript support with `ts-loader`. All your pages with `.
 
 > ts-loader -> babel-loader
 
+Remember to install TypeScript and type definitions by your self:
+
+```
+npm i typescript @types/react @types/react-dom
+```
+
 `ts-loader` will read `<baseDir>/tsconfig.json` as config file.
 
 <p class="warning">Feel free to set `"target": "es6"` in your tsconfig.</p>
