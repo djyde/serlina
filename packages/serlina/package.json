@@ -1,6 +1,6 @@
 {
   "name": "serlina",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "A progressive React serverside-rendering framework",
   "main": "dist/index.js",
   "bin": {
