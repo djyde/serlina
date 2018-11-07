@@ -51,12 +51,21 @@ export default (options: MakeWebpackConfigOptions) => {
     fullPath: false
   })
 
+  const babelLoader = {
+    loader: 'babel-loader',
+    options: {
+      root: baseDir,
+      configFile: fs.existsSync(path.resolve(baseDir, './babel.config.js')) ? path.resolve(baseDir, './babel.config.js') :  path.resolve(__dirname, '../../babel.config.js')
+    }
+  }
+
   // struct webpack config
   let defaultCommonConfig = {
     mode: dev ? 'development' : 'production',
     context: baseDir,
     devtool: false,
     resolve: {
+      extensions: [".ts", ".tsx", ".js"],
       modules: [
         'node_modules',
         path.resolve(__dirname, '../../node_modules'),
@@ -71,22 +80,23 @@ export default (options: MakeWebpackConfigOptions) => {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.jsx?$/,
           exclude: /(node_modules)/,
           use: [
+            babelLoader
+          ]
+        },
+        {
+          test: /\.tsx?$/,
+          exclude: /(node_modules)/,
+          use: [
+            babelLoader,
             {
-              loader: 'babel-loader',
+              loader: 'ts-loader',
               options: {
-                root: baseDir,
-                configFile: fs.existsSync(path.resolve(baseDir, './babel.config.js')) ? path.resolve(baseDir, './babel.config.js') :  path.resolve(__dirname, '../../babel.config.js')
+                configFile: path.resolve(baseDir, './tsconfig.json')
               }
-            },
-            // {
-            //   loader: SerlinaLoader,
-            //   options: {
-            //     baseDir
-            //   }
-            // }
+            }
           ]
         },
         {
@@ -127,6 +137,12 @@ export default (options: MakeWebpackConfigOptions) => {
   // don't use custom externals in server side code
   delete serverSideConfig['externals']
 
+  const reporter = {
+    done (context) {
+      console.log('done')
+    }
+  }
+
   const clientSide = merge.smart({
     entry: {
       ...entries,
@@ -151,6 +167,7 @@ export default (options: MakeWebpackConfigOptions) => {
       new WebpackBar({
         name: 'client side',
         minimal: !dev,
+        color: 'green',
         done: onFinishedClientSideCompilation || noop,
       })
     ]
@@ -175,7 +192,11 @@ export default (options: MakeWebpackConfigOptions) => {
       new WFP(),
       new WebpackBar({
         name: 'server side',
-        minimal: !dev
+        color: 'orange',
+        minimal: !dev,
+        done(stats) {
+          console.log(stats)
+        }
       })
     ]
   }, serverSideConfig)

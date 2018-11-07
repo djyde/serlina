@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "antd": "^3.7.3",
+    "typescript": "^3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "serlina": "^1",

@@ -113,6 +113,9 @@ class Serlina {
 
   _onFinishedClientSideCompilation = (state, ctx) => {
     this.chunks = state['client side'].stats.toJson().chunks
+    state['client side'].stats.toJson().errors.forEach(error => {
+      console.log(error)
+    })
     this.__eventBus.emit('compiled')
   }
 
