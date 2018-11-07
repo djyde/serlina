@@ -200,16 +200,11 @@ The configuration you return will merged to the default configuration using [`we
 
 `options` is an object that contains:
 
-- `dev` **boolean**. dev mode.
+- `dev` **boolean**. dev mode or not.
 - `miniCSSLoader` Actually the `MiniCssExtractPlugin.loader`. Use in place of `style-loader`
 - `baseDir` **string** Serlina application baseDir
 - `merge` The [merge.smart](https://github.com/survivejs/webpack-merge#mergesmartconfiguration-configuration) function.
 - `compileEnv` **'client'|'server'** While Serlina will compile server side code and client side code, you can customize them independently.
-
-For advance user:
-
-- `ReactHotLoader`: `react-hot-loader/babel` loader. Useful for building Serlina plugin.
-- `SerlinaHotLoader` Must use it if using `ReactHotLoader`.
 
 ### Custom Babel config
 
@@ -337,6 +332,16 @@ await serlina.render('user/dashboard')
 ### How to detect browser or server?
 
 `process.browser` return a `boolean`
+
+### How to use TypeScript?
+
+Serlina has built in TypeScript support with `ts-loader`. All your pages with `.ts` or `.tsx` will be parsed through:
+
+> ts-loader -> babel-loader
+
+`ts-loader` will read `<baseDir>/tsconfig.json` as config file.
+
+<p class="warning">Feel free to set `"target": "es6"` in your tsconfig.</p>
 
 ### How to use with GraphQL?
 
