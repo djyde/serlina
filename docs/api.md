@@ -24,6 +24,14 @@ return `serlina` instance.
 
 `string` Webpack's publicPath. It works only when dev mode is `false`.
 
+#### host
+
+`string` Dev server host. `127.0.0.1` by default.
+
+#### port
+
+`number` Dev server port. `3000` by default.
+
 ## methods
 
 ### prepare
