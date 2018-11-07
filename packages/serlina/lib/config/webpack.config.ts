@@ -161,7 +161,7 @@ export default (options: MakeWebpackConfigOptions) => {
       new WebpackBar({
         name: 'client side',
         minimal: !dev,
-        // color: 'green',
+        color: 'green',
         done: onFinishedClientSideCompilation || noop,
       }) 
     ]
@@ -186,7 +186,7 @@ export default (options: MakeWebpackConfigOptions) => {
       new WFP(),
       new WebpackBar({
         name: 'server side',
-        // color: 'orange',
+        color: 'orange',
         minimal: !dev,
         done: onFinishedClientSideCompilation || noop
       })
