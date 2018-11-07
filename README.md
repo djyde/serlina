@@ -1,6 +1,6 @@
 ![logo](https://cdn.nlark.com/yuque/0/2018/png/84329/1533482375370-fc24dd8f-9cf5-46bd-b8ca-8b7cdf43be83.png)
 [![npm](https://badgen.net/npm/v/serlina)](https://npm.im/serlina)
-[![downloads](https://badgen.net/npm/dm/serlina)](https://npm.im/serlina)
+[![downloads](https://badgen.net/npm/dt/serlina)](https://npm.im/serlina)
 [![CircleCI](https://circleci.com/gh/djyde/serlina.svg?style=shield)](https://circleci.com/gh/djyde/serlina)
 
 A progressive React serverside-rendering framework.
