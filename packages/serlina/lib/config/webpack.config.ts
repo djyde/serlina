@@ -125,12 +125,12 @@ export default (options: MakeWebpackConfigOptions) => {
     baseDir
   }
 
-  const clientSideConfig = customConfig ? merge(customConfig(webpack, {
+  const clientSideConfig = customConfig ? merge.smart(customConfig(webpack, {
     ...passedOptions,
     compileEnv: 'client'
   }), defaultCommonConfig) : defaultCommonConfig
 
-  const serverSideConfig = customConfig ? merge(customConfig(webpack, {
+  const serverSideConfig = customConfig ? merge.smart(customConfig(webpack, {
     ...passedOptions,
     compileEnv: 'server'
   }), defaultCommonConfig) : defaultCommonConfig
