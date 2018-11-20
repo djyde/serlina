@@ -39,7 +39,6 @@ export default ({
         {pageStyles.map(url => {
           return <link key={url} rel='stylesheet' href={publicPath + url} />
         })}
-        { <script src={publicPath + vendors}></script>}
         <script dangerouslySetInnerHTML={{
           __html: `
         window.__serlina__DATA = {};
@@ -50,6 +49,7 @@ export default ({
       </head>
       <body {...helmet.bodyAttributes.toComponent()}>
         <div id="app" dangerouslySetInnerHTML={{ __html: body }} />
+        { <script src={publicPath + vendors}></script>}
         {otherScripts.map(script => {
           return <script key={script} src={publicPath + script}></script>
         })}
