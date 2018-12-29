@@ -32,6 +32,10 @@ return `serlina` instance.
 
 `number` Dev server port. `3000` by default.
 
+#### useStream
+
+`boolean` use `renderToNodeStream()` instead of `renderToString()`. `false` by default.
+
 ## methods
 
 ### prepare

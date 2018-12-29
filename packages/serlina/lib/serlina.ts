@@ -25,12 +25,18 @@ const noCacheRequire = (pkg) => {
   return require(pkg)
 }
 
+export interface SerlinaConfig {
+  nodeExternalsWhitelist?: string[]
+  webpack: (webpack) => void
+}
+
 export interface SerlinaOptions {
   baseDir: string,
   outputPath?: string,
   host?: string,
   port?: number,
   publicPath?: string,
+  useStream?: boolean,
   dev?: boolean,
   forceBuild?: boolean,
   __serlinaConfig?: any,
@@ -79,6 +85,7 @@ class Serlina {
       baseDir = '',
       host = DEV_SERVER_HOST,
       port = DEV_SERVER_PORT,
+      useStream = false,
       // @ts-ignore
       outputPath = path.resolve(baseDir, '.serlina'),
       dev = true,
@@ -272,13 +279,13 @@ class Serlina {
       pageStyles = this.assetsMap[pageName] && this.assetsMap[pageName].css ? [this.assetsMap[pageName].css] : []
     }
 
-    const body = ReactDOMServer.renderToString(React.createElement(page.default, initialProps))
+    const body = ReactDOMServer[this.options.useStream ? 'renderToNodeStream' : 'renderToString'](React.createElement(page.default, initialProps))
     if (this.options.__testing) {
       Head.canUseDOM = false
     }
     const helmet = Head.renderStatic()
 
-    const string = '<!DOCTYPE html>' + ReactDOMServer.renderToString(React.createElement(Document, {
+    const string = '<!DOCTYPE html>' + ReactDOMServer.renderToStaticMarkup(React.createElement(Document, {
       pageScripts,
       pageStyles,
       pageName,
