@@ -39,7 +39,7 @@ export default ({
         {helmet.style.toComponent()}
         {helmet.link.toComponent()}
         {inlineCSSString ? inlineCSSString.map(str => {
-          return <style key={str.slice(0, 8)}>{inlineCSSString}</style>
+          return <style key={str.slice(0, 8)} dangerouslySetInnerHTML={{__html: str}}></style>
         }) : pageStyles.map(url => {
           return <link key={url} rel='stylesheet' href={publicPath + url} />
         })}
