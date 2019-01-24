@@ -82,7 +82,7 @@ class Serlina {
   }
 
   constructor(options: SerlinaOptions) {
-    const {
+    let {
       baseDir = '',
       host = DEV_SERVER_HOST,
       port = DEV_SERVER_PORT,
@@ -91,12 +91,16 @@ class Serlina {
       outputPath = path.resolve(baseDir, '.serlina'),
       dev = true,
       // @ts-ignore
-      publicPath = dev ? 'http://' + host + ':' + port + '/' : '/',
+      publicPath = '/',
       forceBuild = false,
       __serlinaConfig,
       __testing,
       inlineCSS
     } = options
+    
+    if (dev) {
+      publicPath = 'http://' + host + ':' + port + '/'
+    }
 
     const serlinaConfig = __serlinaConfig ? __serlinaConfig : (fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {})
 
