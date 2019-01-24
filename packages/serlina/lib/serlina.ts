@@ -286,7 +286,6 @@ class Serlina {
 
     let inlineCSSString: null | string[] = null
 
-    console.log(this.options.inlineCSS)
     if (this.options.inlineCSS === true) {
       inlineCSSString =  pageStyles.map(fileName => {
         return fs.readFileSync(this.resolveOutput(fileName), 'utf8')
