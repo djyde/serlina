@@ -171,8 +171,23 @@ describe('Serlina', () => {
       // TODO: webpack config test
       expect(serverSide)
       expect(clientSide)
-      expect(vendors)      
+      expect(vendors)
     })
 
+  })
+
+  describe('inline css', () => {
+    test('inline css', async () => {
+      const app = new Serlina({
+        baseDir: BASE_DIR,
+        __testing: true,
+        inlineCSS: true,
+      })
+      await app.prepare()
+      app.inject(GLOBAL_PAYLOAD)
+
+      const rendered = await app.render('page2')
+      expect(rendered.body).toMatchSnapshot()
+    })
   })
 })

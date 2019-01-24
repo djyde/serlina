@@ -7,6 +7,7 @@ export interface DocumentProps {
   publicPath: string,
   children?: React.ReactNode,
   helmet: any,
+  inlineCSSString: null | string[],
   body: string,
   pageName: string,
 }
@@ -18,6 +19,7 @@ export default ({
   publicPath,
   body,
   pageName,
+  inlineCSSString,
   helmet
 }: DocumentProps) => {
 
@@ -36,7 +38,9 @@ export default ({
         {helmet.noscript.toComponent()}
         {helmet.style.toComponent()}
         {helmet.link.toComponent()}
-        {pageStyles.map(url => {
+        {inlineCSSString ? inlineCSSString.map(str => {
+          return <style key={str.slice(0, 8)}>{inlineCSSString}</style>
+        }) : pageStyles.map(url => {
           return <link key={url} rel='stylesheet' href={publicPath + url} />
         })}
         <script dangerouslySetInnerHTML={{

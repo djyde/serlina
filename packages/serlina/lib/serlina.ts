@@ -38,6 +38,7 @@ export interface SerlinaOptions {
   publicPath?: string,
   useStream?: boolean,
   dev?: boolean,
+  inlineCSS?: boolean,
   forceBuild?: boolean,
   __serlinaConfig?: any,
   __testing?: boolean
@@ -81,7 +82,7 @@ class Serlina {
   }
 
   constructor(options: SerlinaOptions) {
-    let {
+    const {
       baseDir = '',
       host = DEV_SERVER_HOST,
       port = DEV_SERVER_PORT,
@@ -90,15 +91,12 @@ class Serlina {
       outputPath = path.resolve(baseDir, '.serlina'),
       dev = true,
       // @ts-ignore
-      publicPath = '/',
+      publicPath = dev ? 'http://' + host + ':' + port + '/' : '/',
       forceBuild = false,
       __serlinaConfig,
-      __testing
+      __testing,
+      inlineCSS
     } = options
-
-    if (dev) {
-      publicPath = 'http://' + host + ':' + port + '/'
-    }
 
     const serlinaConfig = __serlinaConfig ? __serlinaConfig : (fs.existsSync(path.resolve(baseDir, './serlina.config.js')) ? require(path.resolve(baseDir, './serlina.config.js')) : {})
 
@@ -113,6 +111,7 @@ class Serlina {
       forceBuild,
       __testing,
       serlinaConfig,
+      inlineCSS
     }
 
     this.resolveOutput = (...args) => path.resolve.call(null, this.options.outputPath, ...args)
@@ -279,16 +278,26 @@ class Serlina {
       pageStyles = this.assetsMap[pageName] && this.assetsMap[pageName].css ? [this.assetsMap[pageName].css] : []
     }
 
-    const body = ReactDOMServer[this.options.useStream ? 'renderToNodeStream' : 'renderToString'](React.createElement(page.default, initialProps))
+    const body = ReactDOMServer.renderToString(React.createElement(page.default, initialProps))
     if (this.options.__testing) {
       Head.canUseDOM = false
     }
     const helmet = Head.renderStatic()
 
-    const string = '<!DOCTYPE html>' + ReactDOMServer.renderToStaticMarkup(React.createElement(Document, {
+    let inlineCSSString: null | string[] = null
+
+    console.log(this.options.inlineCSS)
+    if (this.options.inlineCSS === true) {
+      inlineCSSString =  pageStyles.map(fileName => {
+        return fs.readFileSync(this.resolveOutput(fileName), 'utf8')
+      })
+    }
+
+    const string = '<!DOCTYPE html>' + ReactDOMServer[this.options.useStream ? 'renderToNodeStream' : 'renderToStaticMarkup'](React.createElement(Document, {
       pageScripts,
       pageStyles,
       pageName,
+      inlineCSSString,
       publicPath: this.options.publicPath,
       initialProps,
       body,
