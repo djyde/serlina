@@ -36,7 +36,7 @@ return `serlina` instance.
 
 `boolean` Use `renderToNodeStream()` instead of `renderToString()`. `false` by default.
 
-#### inlinCSS
+#### inlineCSS
 
 `boolean` Use inline `<style>` from reading your all compiled css files, instead of using `<link>`. `false` by default.
 
