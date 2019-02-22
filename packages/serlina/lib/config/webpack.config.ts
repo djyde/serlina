@@ -101,7 +101,6 @@ export default (options: MakeWebpackConfigOptions) => {
         },
         {
           test: /\.css$/,
-          exclude: /(node_modules)/,
           use: [
             MiniCssExtractPlugin.loader,
             { loader: 'css-loader', options: { importLoaders: 1 } }
