@@ -207,7 +207,7 @@ class Serlina {
   }
 
   inject(payload) {
-    this._injectedPayload = payload
+    this._injectedPayload = Object.assign({}, this._injectedPayload, payload);
   }
 
   async render(pageName, injectedPayload) {
