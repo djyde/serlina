@@ -170,6 +170,7 @@ class Serlina {
     if (this.options.dev === true && this.options.__testing !== true) {
       const devServerOptions = {
         quiet: true,
+        sockPort: this.options.port,
         // inline: true,
         // hot: true,
         // port: this.options.port,
