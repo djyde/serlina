@@ -207,7 +207,11 @@ class Serlina {
   }
 
   inject(payload) {
-    this._injectedPayload = payload
+    this._injectedPayload = Object.assign({}, this._injectedPayload, payload)
+  }
+  
+  afterRender() {
+    this._injectedPayload = {}
   }
 
   async render(pageName, injectedPayload) {
@@ -307,7 +311,9 @@ class Serlina {
       body,
       helmet
     }))
-
+    
+    this.afterRender()
+    
     return {
       body: string,
       __webpackConfig: this._webpackConfig,
